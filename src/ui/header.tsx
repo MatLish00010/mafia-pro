@@ -18,6 +18,9 @@ const Header = () => {
             <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
               Games
             </NavLink>
+            <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
+              Players
+            </NavLink>
             <NavLink to={`/rating`} className={({isActive}) => getClassName(isActive)}>
               Rating
             </NavLink>

@@ -7,6 +7,7 @@ import ErrorPage from '@/error-page.tsx';
 import Index from '@/routes';
 import Games from '@/routes/Games';
 import Rating from '@/routes/Rating';
+import Users from '@/routes/Users';
 
 import './App.css';
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             path: 'rating',
             element: <Rating />,
+          },
+          {
+            path: 'players',
+            element: <Users />,
           },
         ],
       },

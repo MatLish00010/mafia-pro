@@ -1,9 +1,18 @@
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {Outlet} from 'react-router-dom';
 
 import {ThemeProvider} from '@/providers/theme.tsx';
 import Header from '@/ui/header.tsx';
 
 import './App.css';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+});
 
 function App() {
   return (
@@ -18,9 +27,11 @@ function App() {
 
 const WrapperApp = () => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <App />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <App />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 
