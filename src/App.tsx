@@ -1,13 +1,27 @@
-import {Button} from '@/ui/button.tsx';
+import {Outlet} from 'react-router-dom';
+
+import {ThemeProvider} from '@/providers/theme.tsx';
+import Header from '@/ui/header.tsx';
 
 import './App.css';
 
 function App() {
   return (
     <div>
-      <Button>Click</Button>
+      <Header />
+      <main className="container mx-auto">
+        <Outlet />
+      </main>
     </div>
   );
 }
 
-export default App;
+const WrapperApp = () => {
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <App />
+    </ThemeProvider>
+  );
+};
+
+export default WrapperApp;
