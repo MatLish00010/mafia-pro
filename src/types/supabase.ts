@@ -7,19 +7,25 @@ export interface Database {
         Row: {
           created_at: string;
           data_birthday: string | null;
+          first_visit: string | null;
           id: number;
+          is_active_club_cart: boolean;
           nick: string | null;
         };
         Insert: {
           created_at?: string;
           data_birthday?: string | null;
+          first_visit?: string | null;
           id?: number;
+          is_active_club_cart?: boolean;
           nick?: string | null;
         };
         Update: {
           created_at?: string;
           data_birthday?: string | null;
+          first_visit?: string | null;
           id?: number;
+          is_active_club_cart?: boolean;
           nick?: string | null;
         };
         Relationships: [];

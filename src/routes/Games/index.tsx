@@ -1,7 +1,9 @@
+import Table from '@/routes/Games/Table';
+
 const Games = () => {
   return (
     <section>
-      <h1>Games</h1>
+      <Table />
     </section>
   );
 };

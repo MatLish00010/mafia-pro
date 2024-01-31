@@ -8,7 +8,7 @@ const getClassName = (isActive: boolean) =>
 
 const Header = () => {
   return (
-    <header className="bg-background">
+    <header className="bg-background mb-5">
       <div className="container mx-auto py-4 flex justify-between items-center">
         <nav>
           <ul className="flex gap-4">

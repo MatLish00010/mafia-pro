@@ -1254,6 +1254,18 @@
   dependencies:
     "@tanstack/query-core" "5.18.0"
 
+"@tanstack/react-table@^8.11.7":
+  version "8.11.7"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.11.7.tgz#a2934c1ee32025d58c9dc4d13cbc15fe0a3e045e"
+  integrity sha512-ZbzfMkLjxUTzNPBXJYH38pv2VpC9WUA+Qe5USSHEBz0dysDTv4z/ARI3csOed/5gmlmrPzVUN3UXGuUMbod3Jg==
+  dependencies:
+    "@tanstack/table-core" "8.11.7"
+
+"@tanstack/table-core@8.11.7":
+  version "8.11.7"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.11.7.tgz#266af5af8576e8860df8abfe4e32e9c4ffbc76b0"
+  integrity sha512-N3ksnkbPbsF3PjubuZCB/etTqvctpXWRHIXTmYfJFnhynQKjeZu8BCuHvdlLPpumKbA+bjY4Ay9AELYLOXPWBg==
+
 "@trivago/prettier-plugin-sort-imports@^4.3.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@trivago/prettier-plugin-sort-imports/-/prettier-plugin-sort-imports-4.3.0.tgz#725f411646b3942193a37041c84e0b2116339789"
