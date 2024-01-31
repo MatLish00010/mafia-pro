@@ -13,7 +13,11 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu.tsx';
 
-export const columns: ColumnDef<User>[] = [
+type Props = {
+  editAction: (id: User['id']) => void;
+};
+
+export const getColumns = ({editAction}: Props): ColumnDef<User>[] => [
   {
     accessorKey: 'nick',
     header: 'Nick',
@@ -53,9 +57,7 @@ export const columns: ColumnDef<User>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => console.log('Edit ' + currentItem.id)}>
-              Edit
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => editAction(currentItem.id)}>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-red-600"
