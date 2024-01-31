@@ -10,7 +10,7 @@ export interface Database {
           first_visit: string | null;
           id: number;
           is_active_club_cart: boolean;
-          nick: string | null;
+          nick: string;
         };
         Insert: {
           created_at?: string;
@@ -18,7 +18,7 @@ export interface Database {
           first_visit?: string | null;
           id?: number;
           is_active_club_cart?: boolean;
-          nick?: string | null;
+          nick?: string;
         };
         Update: {
           created_at?: string;
@@ -26,7 +26,7 @@ export interface Database {
           first_visit?: string | null;
           id?: number;
           is_active_club_cart?: boolean;
-          nick?: string | null;
+          nick?: string;
         };
         Relationships: [];
       };

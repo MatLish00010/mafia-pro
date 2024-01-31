@@ -3,6 +3,7 @@ import {Outlet} from 'react-router-dom';
 
 import {ThemeProvider} from '@/providers/theme.tsx';
 import Header from '@/ui/header.tsx';
+import {Toaster} from '@/ui/toast/toaster.tsx';
 
 import './App.css';
 
@@ -16,12 +17,15 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <div>
-      <Header />
-      <main className="container mx-auto">
-        <Outlet />
-      </main>
-    </div>
+    <>
+      <div>
+        <Header />
+        <main className="container mx-auto">
+          <Outlet />
+        </main>
+      </div>
+      <Toaster />
+    </>
   );
 }
 
