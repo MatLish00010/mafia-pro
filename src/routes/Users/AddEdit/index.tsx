@@ -16,7 +16,6 @@ import {Input} from '@/ui/input.tsx';
 import {Popover, PopoverContent, PopoverTrigger} from '@/ui/popover';
 import {Switch} from '@/ui/switch.tsx';
 
-console.log('tes2t');
 type Props = {
   prevData?: User;
   onOpenChange: DialogProps['onOpenChange'];
