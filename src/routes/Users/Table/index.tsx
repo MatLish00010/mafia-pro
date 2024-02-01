@@ -1,5 +1,6 @@
 import {useState} from 'react';
 
+import useRemoveUser from '@/hooks/useRemoveUser.ts';
 import useUsers from '@/hooks/useUsers.ts';
 import AddEdit from '@/routes/Users/AddEdit';
 import {User} from '@/types/User.ts';
@@ -20,12 +21,15 @@ const Table = () => {
     setAddEdit({isOpen, prevData});
   };
 
+  const {mutate: mutateRemove} = useRemoveUser(() => {});
+
   const columns = getColumns({
     editAction: (id: User['id']) =>
       handleAddEdit(
         true,
         data?.find(item => item.id === id),
       ),
+    removeAction: (id: User['id']) => mutateRemove(id),
   });
 
   return (
@@ -42,11 +46,7 @@ const Table = () => {
             <DialogTitle>Add Player</DialogTitle>
             <DialogDescription>Make changes. Click save when you're done.</DialogDescription>
           </DialogHeader>
-          <AddEdit
-            isOpen={addEdit.isOpen}
-            prevData={addEdit.prevData}
-            onOpenChange={handleAddEdit}
-          />
+          <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
         </DialogContent>
       </Dialog>
     </>

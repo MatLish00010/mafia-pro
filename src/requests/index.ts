@@ -1,7 +1,9 @@
 import {format} from 'date-fns';
 
 import {supabase} from '@/providers/supabaseClient.ts';
-import {AddUserDto} from '@/requests/types/addUserDto.ts';
+import {AddUserDto} from '@/requests/types/addUser.dto.ts';
+import {EditUserDto} from '@/requests/types/editUser.dto.ts';
+import {User} from '@/types/User.ts';
 
 export const getUsers = async () =>
   supabase
@@ -22,3 +24,17 @@ export const addUser = async (dto: AddUserDto) =>
     .select()
     .throwOnError()
     .then(data => data.data);
+
+export const editUser = async (dto: EditUserDto) =>
+  supabase
+    .from('users')
+    .update({
+      nick: dto.nick,
+      data_birthday: dto.data_birthday ? format(new Date(dto.data_birthday), 'y-MM-d') : null,
+      first_visit: dto.first_visit ? format(new Date(dto.first_visit), 'y-MM-d') : null,
+      is_active_club_cart: dto.is_active_club_cart,
+    })
+    .eq('id', dto.id)
+    .select();
+
+export const removeUser = async (id: User['id']) => supabase.from('users').delete().eq('id', id);

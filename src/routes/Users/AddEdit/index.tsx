@@ -6,6 +6,7 @@ import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 
 import useAddUser from '@/hooks/useAddUser.ts';
+import useEditUser from '@/hooks/useEditUser.ts';
 import useUsers from '@/hooks/useUsers.ts';
 import {cn} from '@/lib/utils.ts';
 import {User} from '@/types/User.ts';
@@ -45,9 +46,9 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
         nick: yup
           .string()
           .test('isUniq', 'Nick already used', val => {
-            const isUsed = users?.find(
-              user => user.nick.trim().toLowerCase() === val?.trim().toLowerCase(),
-            );
+            const isUsed =
+              users?.find(user => user.nick.trim().toLowerCase() === val?.trim().toLowerCase()) &&
+              val?.trim().toLowerCase() !== prevData?.nick?.trim().toLowerCase();
             return !isUsed;
           })
           .required('Nick is required'),
@@ -60,11 +61,18 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
     form.reset();
   });
 
+  const {mutate: mutateEdit, isPending: isPendingEdit} = useEditUser(() => {
+    onOpenChange && onOpenChange(false);
+    form.reset();
+  });
+
   return (
     <Form {...form}>
       <form
         className="space-y-8 flex flex-col"
-        onSubmit={form.handleSubmit(data => console.log('data:', data))}>
+        onSubmit={form.handleSubmit(data =>
+          prevData ? mutateEdit({...data, id: prevData.id}) : mutate(data),
+        )}>
         <div className="flex flex-col gap-4">
           <FormField
             control={form.control}
@@ -170,9 +178,8 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
         </div>
         <Button
           className="self-end"
-          disabled={isLoading || isPending}
-          type="button"
-          onClick={form.handleSubmit(dataForm => mutate(dataForm))}>
+          disabled={isLoading || isPending || isPendingEdit}
+          type="submit">
           Submit
         </Button>
       </form>

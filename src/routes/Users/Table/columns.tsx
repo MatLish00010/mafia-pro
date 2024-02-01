@@ -15,9 +15,10 @@ import {
 
 type Props = {
   editAction: (id: User['id']) => void;
+  removeAction: (id: User['id']) => void;
 };
 
-export const getColumns = ({editAction}: Props): ColumnDef<User>[] => [
+export const getColumns = ({editAction, removeAction}: Props): ColumnDef<User>[] => [
   {
     accessorKey: 'nick',
     header: 'Nick',
@@ -59,9 +60,7 @@ export const getColumns = ({editAction}: Props): ColumnDef<User>[] => [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => editAction(currentItem.id)}>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={() => console.log('Remove ' + currentItem.id)}>
+            <DropdownMenuItem className="text-red-600" onClick={() => removeAction(currentItem.id)}>
               Remove
               <Trash2 className="h-4 w-4 ml-5" />
             </DropdownMenuItem>
