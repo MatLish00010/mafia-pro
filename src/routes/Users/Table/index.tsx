@@ -12,6 +12,7 @@ import {getColumns} from './columns.tsx';
 
 const Table = () => {
   const {data, isLoading} = useUsers();
+
   const [addEdit, setAddEdit] = useState<{isOpen: boolean; prevData?: User}>({
     isOpen: false,
     prevData: undefined,
