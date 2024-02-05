@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 
-import {addUser} from '@/requests';
+import {addUser} from '@/requests/user';
 import {DataForm} from '@/routes/Users/AddEdit';
 import {useToast} from '@/ui/toast/use-toast.ts';
 

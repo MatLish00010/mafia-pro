@@ -1,21 +1,22 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 
-import {removeUser} from '@/requests';
+import {editUser} from '@/requests/user';
+import {DataForm} from '@/routes/Users/AddEdit';
 import {User} from '@/types/User.ts';
 import {useToast} from '@/ui/toast/use-toast.ts';
 
-const useRemoveUser = (callback?: () => void) => {
+const useEditUser = (callback?: () => void) => {
   const {toast} = useToast();
 
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['remove user'],
-    mutationFn: (props: User['id']) => removeUser(props),
+    mutationKey: ['edit user'],
+    mutationFn: (props: DataForm & {id: User['id']}) => editUser(props),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['users']});
       toast({
-        title: 'Player removed',
+        title: 'Player updated',
         description: 'Data will automatically updated',
       });
       callback && callback();
@@ -30,4 +31,4 @@ const useRemoveUser = (callback?: () => void) => {
   });
 };
 
-export default useRemoveUser;
+export default useEditUser;

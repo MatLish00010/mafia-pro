@@ -1,12 +1,11 @@
 import {useState} from 'react';
 
-import useRemoveUser from '@/hooks/useRemoveUser.ts';
-import useUsers from '@/hooks/useUsers.ts';
+import useRemoveUser from '@/hooks/user/useRemoveUser.ts';
+import useUsers from '@/hooks/user/useUsers.ts';
 import AddEdit from '@/routes/Users/AddEdit';
 import {User} from '@/types/User.ts';
-import {Button} from '@/ui/button.tsx';
 import {DataTable} from '@/ui/data-table.tsx';
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from '@/ui/dialog.tsx';
+import DialogResponsive from '@/ui/dialogResponsive.tsx';
 
 import {getColumns} from './columns.tsx';
 
@@ -36,20 +35,15 @@ const Table = () => {
   return (
     <>
       <div className="flex flex-col gap-5">
-        <Button className="self-end" onClick={() => handleAddEdit(!addEdit.isOpen)}>
-          Add new
-        </Button>
+        <DialogResponsive
+          isOpen={addEdit.isOpen}
+          setIsOpen={val => setAddEdit({isOpen: val})}
+          buttonLabel="Add new"
+          classNames={{button: ['self-end']}}>
+          <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
+        </DialogResponsive>
         {data && <DataTable columns={columns} data={data} isLoading={isLoading} />}
       </div>
-      <Dialog open={addEdit.isOpen} onOpenChange={handleAddEdit}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add Player</DialogTitle>
-            <DialogDescription>Make changes. Click save when you're done.</DialogDescription>
-          </DialogHeader>
-          <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

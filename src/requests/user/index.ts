@@ -1,8 +1,8 @@
 import {format} from 'date-fns';
 
 import {supabase} from '@/providers/supabaseClient.ts';
-import {AddUserDto} from '@/requests/types/addUser.dto.ts';
-import {EditUserDto} from '@/requests/types/editUser.dto.ts';
+import {AddUserDto} from '@/requests/user/dto/addUser.dto.ts';
+import {EditUserDto} from '@/requests/user/dto/editUser.dto.ts';
 import {User} from '@/types/User.ts';
 
 export const getUsers = async () =>
