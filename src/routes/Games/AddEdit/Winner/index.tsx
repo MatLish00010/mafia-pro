@@ -38,7 +38,7 @@ const Winner = ({onSubmit, defaultValues}: Props) => {
           name="winner"
           render={({field}) => (
             <FormItem className="flex flex-col items-center flex-1 ">
-              <FormLabel>Choose team</FormLabel>
+              <FormLabel>Select the winning team</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
