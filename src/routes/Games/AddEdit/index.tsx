@@ -1,10 +1,14 @@
 import {useReducer, useState} from 'react';
 
 import {cn} from '@/lib/utils.ts';
+import FinalTable from '@/routes/Games/AddEdit/FinalTable';
 import FirstKilled from '@/routes/Games/AddEdit/FirstKilled';
+import Points from '@/routes/Games/AddEdit/Points';
+import {DataForm} from '@/routes/Games/AddEdit/Points/types.ts';
 import {Role} from '@/types/Role.ts';
 import {Team} from '@/types/Team.ts';
 import {User} from '@/types/User.ts';
+import DialogResponsive from '@/ui/dialogResponsive.tsx';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/ui/tabs.tsx';
 
 import Players from './Players';
@@ -22,6 +26,7 @@ enum TabVariant {
 
 const AddEdit = () => {
   const [currentTub, setCurrentTub] = useState<TabVariant>(TabVariant.PLAYERS);
+  const [isOpenFinalTable, setIsOpenFinalTable] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const onSubmitPlayers = (players: User[]) => {
@@ -47,71 +52,101 @@ const AddEdit = () => {
     setCurrentTub(TabVariant.POINTS);
   };
 
+  const onSubmitPoints = (points: DataForm['points']) => {
+    dispatch({
+      type: 'ADD_POINTS',
+      points,
+    });
+    setIsOpenFinalTable(true);
+  };
+
+  const onFinallSubmit = () => {
+    console.log('FINAL:', state);
+    setIsOpenFinalTable(false);
+  };
+
   return (
-    <Tabs value={currentTub} className="min-h-[500px] mt-4 flex flex-col gap-7">
-      <TabsList className="w-full">
-        <TabsTrigger
-          value={TabVariant.PLAYERS}
-          onClick={() => setCurrentTub(TabVariant.PLAYERS)}
-          className="flex-1">
-          Players
-        </TabsTrigger>
-        <TabsTrigger
-          disabled={!state.players.length}
-          value={TabVariant.ROLES}
-          onClick={() => setCurrentTub(TabVariant.ROLES)}
-          className="flex-1">
-          Roles
-        </TabsTrigger>
-        <TabsTrigger
-          disabled={!state.roles.length}
+    <>
+      <Tabs value={currentTub} className="min-h-[500px] mt-4 flex flex-col gap-7">
+        <TabsList className="w-full">
+          <TabsTrigger
+            value={TabVariant.PLAYERS}
+            onClick={() => setCurrentTub(TabVariant.PLAYERS)}
+            className="flex-1">
+            Players
+          </TabsTrigger>
+          <TabsTrigger
+            disabled={!state.players.length}
+            value={TabVariant.ROLES}
+            onClick={() => setCurrentTub(TabVariant.ROLES)}
+            className="flex-1">
+            Roles
+          </TabsTrigger>
+          <TabsTrigger
+            disabled={!state.roles.length}
+            value={TabVariant.WINNER}
+            onClick={() => setCurrentTub(TabVariant.WINNER)}
+            className="flex-1">
+            Winner
+          </TabsTrigger>
+          <TabsTrigger
+            disabled={!state.roles.length}
+            value={TabVariant.FIRST_KILLED}
+            onClick={() => setCurrentTub(TabVariant.FIRST_KILLED)}
+            className="flex-1">
+            Fist killed
+          </TabsTrigger>
+          <TabsTrigger
+            disabled={!state.roles.length}
+            value={TabVariant.POINTS}
+            onClick={() => setCurrentTub(TabVariant.POINTS)}
+            className="flex-1">
+            Points
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value={TabVariant.PLAYERS} className="flex-1">
+          <Players onSubmit={onSubmitPlayers} defaultValues={state.players} />
+        </TabsContent>
+        <TabsContent value={TabVariant.ROLES} className="flex-1">
+          <Roles players={state.players} onSubmit={onSubmitRoles} defaultValues={state.roles} />
+        </TabsContent>
+        <TabsContent
           value={TabVariant.WINNER}
-          onClick={() => setCurrentTub(TabVariant.WINNER)}
-          className="flex-1">
-          Winner
-        </TabsTrigger>
-        <TabsTrigger
-          disabled={!state.roles.length}
+          className={cn([currentTub === TabVariant.WINNER && 'flex', 'flex-1'])}>
+          <Winner onSubmit={onSubmitWinner} defaultValues={state.winner} />
+        </TabsContent>
+        <TabsContent
           value={TabVariant.FIRST_KILLED}
-          onClick={() => setCurrentTub(TabVariant.FIRST_KILLED)}
-          className="flex-1">
-          Fist killed
-        </TabsTrigger>
-        <TabsTrigger
-          disabled={!state.roles.length}
+          className={cn([currentTub === TabVariant.FIRST_KILLED && 'flex', 'flex-1'])}>
+          <FirstKilled
+            players={state.players}
+            onSubmit={onSubmitFirstKilled}
+            defaultValues={{
+              firstKilledPosition: state.firstKilled.position,
+              bonuses: state.firstKilled.bonuses !== null ? state.firstKilled.bonuses : undefined,
+            }}
+          />
+        </TabsContent>
+        <TabsContent
           value={TabVariant.POINTS}
-          onClick={() => setCurrentTub(TabVariant.POINTS)}
-          className="flex-1">
-          Points
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value={TabVariant.PLAYERS} className="flex-1">
-        <Players onSubmit={onSubmitPlayers} defaultValues={state.players} />
-      </TabsContent>
-      <TabsContent value={TabVariant.ROLES} className="flex-1">
-        <Roles players={state.players} onSubmit={onSubmitRoles} defaultValues={state.roles} />
-      </TabsContent>
-      <TabsContent
-        value={TabVariant.WINNER}
-        className={cn([currentTub === TabVariant.WINNER && 'flex', 'flex-1'])}>
-        <Winner onSubmit={onSubmitWinner} defaultValues={state.winner} />
-      </TabsContent>
-      <TabsContent
-        value={TabVariant.FIRST_KILLED}
-        className={cn([currentTub === TabVariant.FIRST_KILLED && 'flex', 'flex-1'])}>
-        <FirstKilled
-          players={state.players}
-          onSubmit={onSubmitFirstKilled}
-          defaultValues={{
-            firstKilledPosition: state.firstKilled.position,
-            bonuses: state.firstKilled.bonuses !== null ? state.firstKilled.bonuses : undefined,
-          }}
+          className={cn([currentTub === TabVariant.POINTS && 'flex', 'flex-1'])}>
+          <Points
+            roles={state.roles}
+            players={state.players}
+            winnerTeam={state.winner}
+            onSubmit={onSubmitPoints}
+            defaultValues={state.points}
+          />
+        </TabsContent>
+      </Tabs>
+      <DialogResponsive isOpen={isOpenFinalTable} setIsOpen={setIsOpenFinalTable}>
+        <FinalTable
+          state={state}
+          onSubmit={onFinallSubmit}
+          onCancel={() => setIsOpenFinalTable(false)}
         />
-      </TabsContent>
-      <TabsContent value={TabVariant.POINTS} className="flex-1">
-        <h1>Points</h1>
-      </TabsContent>
-    </Tabs>
+      </DialogResponsive>
+    </>
   );
 };
 

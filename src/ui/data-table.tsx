@@ -28,12 +28,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading?: boolean;
+  hidePagination?: boolean;
+  hideSearch?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  hidePagination,
+  hideSearch,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [{pageIndex, pageSize}, setPagination] = useState<PaginationState>({
@@ -73,14 +77,17 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter by nick..."
-          value={(table.getColumn('nick')?.getFilterValue() as string) ?? ''}
-          onChange={event => table.getColumn('nick')?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+      {!hideSearch && (
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Filter by nick..."
+            value={(table.getColumn('nick')?.getFilterValue() as string) ?? ''}
+            onChange={event => table.getColumn('nick')?.setFilterValue(event.target.value)}
+            className="max-w-sm"
+          />
+        </div>
+      )}
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -126,41 +133,43 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}>
-            Next
-          </Button>
+      {!hidePagination && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}>
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}>
+              Next
+            </Button>
+          </div>
+          <Select
+            onValueChange={val => table.setPageSize(Number(val))}
+            defaultValue={`${table.getState().pagination.pageSize}`}>
+            <SelectTrigger className="w-[80px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Page Size</SelectLabel>
+                {[5, 10, 20, 50].map(pageSize => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
-        <Select
-          onValueChange={val => table.setPageSize(Number(val))}
-          defaultValue={`${table.getState().pagination.pageSize}`}>
-          <SelectTrigger className="w-[80px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Page Size</SelectLabel>
-              {[5, 10, 20, 50].map(pageSize => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
+      )}
     </div>
   );
 }

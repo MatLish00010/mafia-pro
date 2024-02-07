@@ -2,11 +2,20 @@ import {Role} from '@/types/Role.ts';
 import {Team} from '@/types/Team.ts';
 import {User} from '@/types/User.ts';
 
-type State = {
+export type State = {
   players: User[];
   roles: Role[];
   winner: Team;
   firstKilled: {position: number | null; bonuses: number};
+  points: {
+    isWinner: boolean;
+    removed: boolean;
+    vot: boolean;
+    breakLose: boolean;
+    role: Role;
+    bonusesWinners: number;
+    bonusesLosers: number;
+  }[];
 };
 
 export const initialState: State = {
@@ -17,6 +26,7 @@ export const initialState: State = {
     position: null,
     bonuses: 0,
   },
+  points: [],
 };
 
 export type Action =
@@ -29,7 +39,8 @@ export type Action =
         position: State['firstKilled']['position'];
         bonuses: State['firstKilled']['bonuses'];
       };
-    };
+    }
+  | {type: 'ADD_POINTS'; points: State['points']};
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -47,6 +58,8 @@ export const reducer = (state: State, action: Action): State => {
           position: action.firstKilled.position,
         },
       };
+    case 'ADD_POINTS':
+      return {...state, points: action.points};
     default:
       return state;
   }
