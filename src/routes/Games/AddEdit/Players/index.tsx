@@ -1,21 +1,26 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import {CalendarIcon} from '@radix-ui/react-icons';
+import {format} from 'date-fns';
 import {useFieldArray, useForm} from 'react-hook-form';
 import * as yup from 'yup';
 
 import useUsers from '@/hooks/user/useUsers.ts';
+import {cn} from '@/lib/utils.ts';
 import {User} from '@/types/User.ts';
 import {Button} from '@/ui/button.tsx';
+import {Calendar} from '@/ui/calendar.tsx';
 import ComboBoxResponsive from '@/ui/comeboxResponsive';
-import {DialogDescription, DialogHeader, DialogTitle} from '@/ui/dialog.tsx';
-import {Form, FormField, FormItem, FormLabel, FormMessage} from '@/ui/form.tsx';
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/ui/form.tsx';
+import {Popover, PopoverContent, PopoverTrigger} from '@/ui/popover.tsx';
 
 type DataForm = {
+  date: Date;
   players: Pick<User, 'id' | 'nick'>[];
 };
 
 type Props = {
-  onSubmit: (data: User[]) => void;
-  defaultValues?: User[];
+  onSubmit: (data: {players: User[]; date: Date}) => void;
+  defaultValues?: {players: User[]; date: Date};
 };
 
 const Players = ({onSubmit, defaultValues}: Props) => {
@@ -23,8 +28,9 @@ const Players = ({onSubmit, defaultValues}: Props) => {
 
   const form = useForm<DataForm>({
     defaultValues: {
-      players: defaultValues?.length
-        ? defaultValues.map(item => ({
+      date: defaultValues?.date || new Date(),
+      players: defaultValues?.players?.length
+        ? defaultValues.players.map(item => ({
             id: item.id,
             nick: item.nick,
           }))
@@ -32,6 +38,7 @@ const Players = ({onSubmit, defaultValues}: Props) => {
     },
     resolver: yupResolver(
       yup.object().shape({
+        date: yup.date().required(),
         players: yup
           .array()
           .of(
@@ -57,16 +64,11 @@ const Players = ({onSubmit, defaultValues}: Props) => {
       return data?.find(user => user.id === player.id);
     }) as User[];
 
-    onSubmit(players);
+    onSubmit({players, date: dataVal.date});
   };
 
   return (
     <div>
-      <DialogHeader>
-        <DialogTitle>Add Players</DialogTitle>
-        <DialogDescription>Choose Nick of players</DialogDescription>
-      </DialogHeader>
-      {isLoading && 'Loading...'}
       {!isLoading && !!data?.length && (
         <Form {...form}>
           <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(prevSubmit)}>
@@ -100,6 +102,42 @@ const Players = ({onSubmit, defaultValues}: Props) => {
                 />
               ))}
             </div>
+            <FormField
+              control={form.control}
+              name="date"
+              render={({field}) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date of game</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'w-[240px] pl-3 text-left font-normal',
+                            !field.value && 'text-muted-foreground',
+                          )}>
+                          {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        captionLayout="dropdown-buttons"
+                        fromYear={1900}
+                        toYear={new Date().getFullYear()}
+                        mode="single"
+                        selected={field.value as Date}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button className="self-end" disabled={isLoading} type="submit">
               Submit
             </Button>

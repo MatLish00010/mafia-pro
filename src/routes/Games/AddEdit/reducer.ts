@@ -3,6 +3,7 @@ import {Team} from '@/types/Team.ts';
 import {User} from '@/types/User.ts';
 
 export type State = {
+  date: Date;
   players: User[];
   roles: Role[];
   winner: Team;
@@ -19,6 +20,7 @@ export type State = {
 };
 
 export const initialState: State = {
+  date: new Date(),
   players: [],
   roles: [],
   winner: 'RED',
@@ -30,7 +32,7 @@ export const initialState: State = {
 };
 
 export type Action =
-  | {type: 'ADD_PLAYERS'; players: State['players']}
+  | {type: 'ADD_PLAYERS'; props: {players: State['players']; date: Date}}
   | {type: 'ADD_ROLES'; roles: State['roles']}
   | {type: 'ADD_WINNER'; winner: State['winner']}
   | {
@@ -45,7 +47,7 @@ export type Action =
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'ADD_PLAYERS':
-      return {...state, players: action.players};
+      return {...state, players: action.props.players, date: action.props.date};
     case 'ADD_ROLES':
       return {...state, roles: action.roles};
     case 'ADD_WINNER':

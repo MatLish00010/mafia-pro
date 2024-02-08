@@ -1,4 +1,5 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {format} from 'date-fns';
 
 import {addGame} from '@/requests/games';
 import {State} from '@/routes/Games/AddEdit/reducer.ts';
@@ -14,7 +15,7 @@ const useAddGame = (callback?: () => void) => {
     mutationFn: (props: State) => {
       return addGame({
         winner: props.winner,
-        date: '2024-02-07',
+        date: format(props.date, 'yyyy-MM-dd'),
         notes: '',
         players_data: props.players.map((player, index) => {
           const {roles, points, firstKilled} = props;

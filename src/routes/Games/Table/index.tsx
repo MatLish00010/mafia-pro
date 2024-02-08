@@ -9,7 +9,7 @@ const Table = () => {
     <>
       <h1>Users T</h1>
       <DialogResponsive isOpen={isOpen} setIsOpen={setIsOpen} buttonLabel="Add new">
-        <AddEdit />
+        <AddEdit onClose={() => setIsOpen(false)} />
       </DialogResponsive>
     </>
   );

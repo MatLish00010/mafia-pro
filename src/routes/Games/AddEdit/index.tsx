@@ -25,14 +25,18 @@ enum TabVariant {
   POINTS = 'points',
 }
 
-const AddEdit = () => {
+type Props = {
+  onClose: () => void;
+};
+
+const AddEdit = ({onClose}: Props) => {
   const [currentTub, setCurrentTub] = useState<TabVariant>(TabVariant.PLAYERS);
   const [isOpenFinalTable, setIsOpenFinalTable] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const {mutate} = useAddGame();
 
-  const onSubmitPlayers = (players: User[]) => {
-    dispatch({type: 'ADD_PLAYERS', players});
+  const onSubmitPlayers = (props: {players: User[]; date: Date}) => {
+    dispatch({type: 'ADD_PLAYERS', props});
     setCurrentTub(TabVariant.ROLES);
   };
 
@@ -63,9 +67,9 @@ const AddEdit = () => {
   };
 
   const onFinalSubmit = () => {
-    console.log('FINAL:', state);
-    // setIsOpenFinalTable(false);
+    setIsOpenFinalTable(false);
     mutate(state);
+    onClose();
   };
 
   return (
@@ -108,7 +112,13 @@ const AddEdit = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value={TabVariant.PLAYERS} className="flex-1">
-          <Players onSubmit={onSubmitPlayers} defaultValues={state.players} />
+          <Players
+            onSubmit={onSubmitPlayers}
+            defaultValues={{
+              players: state.players,
+              date: state.date,
+            }}
+          />
         </TabsContent>
         <TabsContent value={TabVariant.ROLES} className="flex-1">
           <Roles players={state.players} onSubmit={onSubmitRoles} defaultValues={state.roles} />
