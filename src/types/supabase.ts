@@ -1,6 +1,6 @@
 export type Json = string | number | boolean | null | {[key: string]: Json | undefined} | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       game_details: {
@@ -12,8 +12,9 @@ export interface Database {
           first_killed_boneses: number | null;
           game_id: string | null;
           id: string;
+          position: number;
           removed: boolean;
-          role: Database['public']['Enums']['ROLE'];
+          role: Database['public']['Enums']['role'];
           user_id: string;
           victory_opposing_team: boolean;
           win: boolean;
@@ -26,8 +27,9 @@ export interface Database {
           first_killed_boneses?: number | null;
           game_id?: string | null;
           id?: string;
+          position: number;
           removed: boolean;
-          role: Database['public']['Enums']['ROLE'];
+          role: Database['public']['Enums']['role'];
           user_id: string;
           victory_opposing_team: boolean;
           win: boolean;
@@ -40,8 +42,9 @@ export interface Database {
           first_killed_boneses?: number | null;
           game_id?: string | null;
           id?: string;
+          position?: number;
           removed?: boolean;
-          role?: Database['public']['Enums']['ROLE'];
+          role?: Database['public']['Enums']['role'];
           user_id?: string;
           victory_opposing_team?: boolean;
           win?: boolean;
@@ -69,21 +72,21 @@ export interface Database {
           date: string;
           id: string;
           notes: string | null;
-          winner: Database['public']['Enums']['Team'];
+          winner: Database['public']['Enums']['team'];
         };
         Insert: {
           created_at?: string;
           date: string;
           id?: string;
           notes?: string | null;
-          winner: Database['public']['Enums']['Team'];
+          winner: Database['public']['Enums']['team'];
         };
         Update: {
           created_at?: string;
           date?: string;
           id?: string;
           notes?: string | null;
-          winner?: Database['public']['Enums']['Team'];
+          winner?: Database['public']['Enums']['team'];
         };
         Relationships: [];
       };
@@ -119,17 +122,25 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      add_game: {
+        Args: {
+          winner_team: Database['public']['Enums']['team'];
+          game_date: string;
+          game_notes: string;
+          players_data: TablesInsert<'game_details'>[];
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
-      ROLE: 'RED' | 'BLACK' | 'SHERIFF' | 'DON';
-      Team: 'RED' | 'BLACK';
+      role: 'RED' | 'BLACK' | 'SHERIFF' | 'DON';
+      team: 'RED' | 'BLACK';
     };
     CompositeTypes: {
       [_ in never]: never;
     };
   };
-}
+};
 
 export type Tables<
   PublicTableNameOrOptions extends

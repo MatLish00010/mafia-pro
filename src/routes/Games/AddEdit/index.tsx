@@ -1,5 +1,6 @@
 import {useReducer, useState} from 'react';
 
+import useAddGame from '@/hooks/game/useAddGame.ts';
 import {cn} from '@/lib/utils.ts';
 import FinalTable from '@/routes/Games/AddEdit/FinalTable';
 import FirstKilled from '@/routes/Games/AddEdit/FirstKilled';
@@ -28,6 +29,7 @@ const AddEdit = () => {
   const [currentTub, setCurrentTub] = useState<TabVariant>(TabVariant.PLAYERS);
   const [isOpenFinalTable, setIsOpenFinalTable] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const {mutate} = useAddGame();
 
   const onSubmitPlayers = (players: User[]) => {
     dispatch({type: 'ADD_PLAYERS', players});
@@ -60,9 +62,10 @@ const AddEdit = () => {
     setIsOpenFinalTable(true);
   };
 
-  const onFinallSubmit = () => {
+  const onFinalSubmit = () => {
     console.log('FINAL:', state);
-    setIsOpenFinalTable(false);
+    // setIsOpenFinalTable(false);
+    mutate(state);
   };
 
   return (
@@ -142,7 +145,7 @@ const AddEdit = () => {
       <DialogResponsive isOpen={isOpenFinalTable} setIsOpen={setIsOpenFinalTable}>
         <FinalTable
           state={state}
-          onSubmit={onFinallSubmit}
+          onSubmit={onFinalSubmit}
           onCancel={() => setIsOpenFinalTable(false)}
         />
       </DialogResponsive>
