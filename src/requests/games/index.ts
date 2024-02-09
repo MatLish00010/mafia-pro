@@ -1,5 +1,6 @@
 import {supabase} from '@/providers/supabaseClient.ts';
 import {AddGameDto} from '@/requests/games/dto/addGame.dto.ts';
+import {Game} from '@/types/Game.ts';
 
 export const addGame = async (dto: AddGameDto) =>
   supabase
@@ -23,3 +24,28 @@ export const addGame = async (dto: AddGameDto) =>
       }),
     })
     .throwOnError();
+
+export const getGames = async () =>
+  supabase
+    .from('games')
+    .select()
+    .order('date', {ascending: false})
+    .throwOnError()
+    .then(res => res.data);
+
+export const getGamePlayers = async (id: Game['id']) =>
+  supabase
+    .from('game_details')
+    .select(
+      `
+    *,
+    users (nick)
+    `,
+    )
+    .eq('game_id', id)
+
+    .throwOnError()
+    .then(res => res.data);
+
+export const removeGame = async (id: Game['id']) =>
+  supabase.from('games').delete().eq('id', id).throwOnError();
