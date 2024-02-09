@@ -1,7 +1,9 @@
+import Table from '@/routes/Rating/Table';
+
 const Rating = () => {
   return (
     <section>
-      <h1>Rating</h1>
+      <Table />
     </section>
   );
 };
