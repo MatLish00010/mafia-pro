@@ -8,7 +8,6 @@ import {Team} from '@/types/Team.ts';
 import {User} from '@/types/User.ts';
 import {Badge} from '@/ui/badge.tsx';
 import {Button} from '@/ui/button.tsx';
-import {Checkbox} from '@/ui/checkbox.tsx';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/ui/form.tsx';
 import {Input} from '@/ui/input.tsx';
 
@@ -48,7 +47,7 @@ const Points = ({roles, winnerTeam, players, onSubmit, defaultValues}: Props) =>
           })),
     },
     mode: 'onChange',
-    resolver: yupResolver(validation()),
+    resolver: yupResolver(validation),
   });
 
   const {fields} = useFieldArray({
@@ -56,17 +55,14 @@ const Points = ({roles, winnerTeam, players, onSubmit, defaultValues}: Props) =>
     name: 'points',
   });
 
-  const points = form.watch('points');
-  const indexOfSelectedGTV = points.findIndex(f => f.vot);
-
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(data => onSubmit(data.points))}
         className="flex flex-col justify-between flex-1 gap-4">
-        <div className="flex flex-col gap-5 relative">
+        <div className="flex flex-col gap-2 relative">
           {fields.map((item, index) => (
-            <div className="grid grid-cols-6 space-y-0 items-center" key={item.id}>
+            <div className="grid grid-cols-3 space-y-0 items-center" key={item.id}>
               <FormLabel className=" flex flex-col ">
                 {index + 1}. {players[index].nick}:
               </FormLabel>
@@ -92,65 +88,6 @@ const Points = ({roles, winnerTeam, players, onSubmit, defaultValues}: Props) =>
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-              </div>
-              <div className="justify-self-center">
-                {index === 0 && <Header value="Removed" className={['translate-x-[-33%]']} />}
-                <FormField
-                  control={form.control}
-                  name={`points.${index}.removed`}
-                  render={({field}) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
-              </div>
-              <div className="justify-self-center">
-                {index === 0 && <Header value="VOT" className={['translate-x-[-15%]']} />}
-                <FormField
-                  control={form.control}
-                  name={`points.${index}.vot`}
-                  render={({field}) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            disabled={
-                              (indexOfSelectedGTV >= 0 && indexOfSelectedGTV !== index) ||
-                              item.isWinner
-                            }
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
-              </div>
-              <div className="justify-self-center">
-                {index === 0 && <Header value="Break" className={['translate-x-[-24%]']} />}
-                <FormField
-                  control={form.control}
-                  name={`points.${index}.breakLose`}
-                  render={({field}) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            disabled={item.isWinner}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
                 />
               </div>
             </div>

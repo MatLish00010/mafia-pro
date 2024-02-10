@@ -18,8 +18,9 @@ const useAddGame = (callback?: () => void) => {
         date: format(props.date, 'yyyy-MM-dd'),
         notes: '',
         players_data: props.players.map((player, index) => {
-          const {roles, points, firstKilled} = props;
-          const {isWinner, bonusesWinners, bonusesLosers, breakLose, removed, vot} = points[index];
+          const {roles, points, firstKilled, wills} = props;
+          const {isWinner, bonusesWinners, bonusesLosers} = points[index];
+          const {breakLose, removed, vot} = wills[index];
           const {position, bonuses} = firstKilled;
           return {
             role: roles[index],
@@ -38,6 +39,7 @@ const useAddGame = (callback?: () => void) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['games']});
+      queryClient.invalidateQueries({queryKey: ['rating']});
       toast({
         title: 'Game added',
         description: 'Data will automatically updated',

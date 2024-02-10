@@ -79,7 +79,7 @@ const FirstKilled = ({players, onSubmit, defaultValues}: Props) => {
                 name="firstKilledPosition"
                 render={({field}) => {
                   return (
-                    <FormItem key={item.id} className="grid grid-cols-2">
+                    <FormItem key={item.id} className="grid grid-cols-2 items-center space-y-0">
                       <FormLabel className="text-sm font-normal">
                         {index + 1}: {item.nick}
                       </FormLabel>
@@ -117,7 +117,6 @@ const FirstKilled = ({players, onSubmit, defaultValues}: Props) => {
           ))}
           <FormMessage />
         </FormItem>
-
         <Button type="submit" className="self-end">
           Submit
         </Button>

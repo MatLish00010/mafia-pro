@@ -10,12 +10,14 @@ export type State = {
   firstKilled: {position: number | null; bonuses: number};
   points: {
     isWinner: boolean;
-    removed: boolean;
-    vot: boolean;
-    breakLose: boolean;
     role: Role;
     bonusesWinners: number;
     bonusesLosers: number;
+  }[];
+  wills: {
+    removed: boolean;
+    vot: boolean;
+    breakLose: boolean;
   }[];
 };
 
@@ -29,6 +31,7 @@ export const initialState: State = {
     bonuses: 0,
   },
   points: [],
+  wills: [],
 };
 
 export type Action =
@@ -42,7 +45,8 @@ export type Action =
         bonuses: State['firstKilled']['bonuses'];
       };
     }
-  | {type: 'ADD_POINTS'; points: State['points']};
+  | {type: 'ADD_POINTS'; points: State['points']}
+  | {type: 'ADD_WILLS'; wills: State['wills']};
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -62,6 +66,8 @@ export const reducer = (state: State, action: Action): State => {
       };
     case 'ADD_POINTS':
       return {...state, points: action.points};
+    case 'ADD_WILLS':
+      return {...state, wills: action.wills};
     default:
       return state;
   }

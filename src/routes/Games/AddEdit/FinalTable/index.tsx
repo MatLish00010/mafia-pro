@@ -38,9 +38,9 @@ const FinalTable = ({state, onSubmit, onCancel}: Props) => {
     points: calculatePoints({
       fkBonuses: state.firstKilled.position === index ? state.firstKilled.bonuses : 0,
       win: state.points[index].isWinner,
-      removed: state.points[index].removed,
-      vot: state.points[index].vot,
-      breakLose: state.points[index].breakLose,
+      removed: state.wills[index].removed,
+      vot: state.wills[index].vot,
+      breakLose: state.wills[index].breakLose,
       bonuses: state.points[index].isWinner
         ? state.points[index].bonusesWinners
         : state.points[index].bonusesLosers,

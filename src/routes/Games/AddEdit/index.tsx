@@ -5,7 +5,7 @@ import {cn} from '@/lib/utils.ts';
 import FinalTable from '@/routes/Games/AddEdit/FinalTable';
 import FirstKilled from '@/routes/Games/AddEdit/FirstKilled';
 import Points from '@/routes/Games/AddEdit/Points';
-import {DataForm} from '@/routes/Games/AddEdit/Points/types.ts';
+import Wills from '@/routes/Games/AddEdit/Wills';
 import {Role} from '@/types/Role.ts';
 import {Team} from '@/types/Team.ts';
 import {User} from '@/types/User.ts';
@@ -15,7 +15,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/ui/tabs.tsx';
 import Players from './Players';
 import Roles from './Roles';
 import Winner from './Winner';
-import {initialState, reducer} from './reducer.ts';
+import {State, initialState, reducer} from './reducer.ts';
 
 enum TabVariant {
   PLAYERS = 'players',
@@ -23,6 +23,7 @@ enum TabVariant {
   WINNER = 'winner',
   FIRST_KILLED = 'first_killed',
   POINTS = 'points',
+  WILLS = 'wills',
 }
 
 type Props = {
@@ -58,10 +59,18 @@ const AddEdit = ({onClose}: Props) => {
     setCurrentTub(TabVariant.POINTS);
   };
 
-  const onSubmitPoints = (points: DataForm['points']) => {
+  const onSubmitPoints = (points: State['points']) => {
     dispatch({
       type: 'ADD_POINTS',
       points,
+    });
+    setCurrentTub(TabVariant.WILLS);
+  };
+
+  const onSubmitWills = (wills: State['wills']) => {
+    dispatch({
+      type: 'ADD_WILLS',
+      wills,
     });
     setIsOpenFinalTable(true);
   };
@@ -94,14 +103,14 @@ const AddEdit = ({onClose}: Props) => {
             value={TabVariant.WINNER}
             onClick={() => setCurrentTub(TabVariant.WINNER)}
             className="flex-1">
-            Winner
+            Win
           </TabsTrigger>
           <TabsTrigger
             disabled={!state.roles.length}
             value={TabVariant.FIRST_KILLED}
             onClick={() => setCurrentTub(TabVariant.FIRST_KILLED)}
             className="flex-1">
-            Fist killed
+            FK
           </TabsTrigger>
           <TabsTrigger
             disabled={!state.roles.length}
@@ -109,6 +118,13 @@ const AddEdit = ({onClose}: Props) => {
             onClick={() => setCurrentTub(TabVariant.POINTS)}
             className="flex-1">
             Points
+          </TabsTrigger>
+          <TabsTrigger
+            disabled={!state.points.length}
+            value={TabVariant.WILLS}
+            onClick={() => setCurrentTub(TabVariant.WILLS)}
+            className="flex-1">
+            Wills
           </TabsTrigger>
         </TabsList>
         <TabsContent value={TabVariant.PLAYERS} className="flex-1">
@@ -149,6 +165,17 @@ const AddEdit = ({onClose}: Props) => {
             winnerTeam={state.winner}
             onSubmit={onSubmitPoints}
             defaultValues={state.points}
+          />
+        </TabsContent>
+        <TabsContent
+          value={TabVariant.WILLS}
+          className={cn([currentTub === TabVariant.WILLS && 'flex', 'flex-1'])}>
+          <Wills
+            players={state.players}
+            points={state.points}
+            winnerTeam={state.winner}
+            onSubmit={onSubmitWills}
+            defaultValues={state.wills}
           />
         </TabsContent>
       </Tabs>
