@@ -7,7 +7,7 @@ import {Role} from '@/types/Role.ts';
 import {User} from '@/types/User.ts';
 import {Button} from '@/ui/button.tsx';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/ui/form';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/ui/select.tsx';
+import {Toggle} from '@/ui/toggle.tsx';
 
 type Props = {
   players: User[];
@@ -25,7 +25,7 @@ const options: {value: Role; label: string}[] = [
   {value: 'RED', label: 'Red'},
   {value: 'BLACK', label: 'Black'},
   {value: 'DON', label: 'Don'},
-  {value: 'SHERIFF', label: 'Sheriff'},
+  {value: 'SHERIFF', label: 'Sher'},
 ];
 
 const initialRoles = Array.from({length: 10}, () => ({value: ''})) as unknown as DataForm['roles'];
@@ -114,35 +114,30 @@ const Roles = ({players, onSubmit, defaultValues}: Props) => {
             name={`roles.${index}.value`}
             render={({field}) => (
               <FormItem>
-                <div className="flex items-center">
+                <div className="grid grid-cols-3 items-center">
                   <FormLabel className="shrink-0 w-20">
-                    {index + 1}. {players[index].nick}:
+                    {index + 1}.{players[index].nick}:
                   </FormLabel>
-                  <div className="flex-1 flex flex-col gap-2">
-                    <Select
-                      onValueChange={val => {
-                        field.onChange(val);
-                        getDisabledKeys();
-                      }}
-                      defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {options.map(option => (
-                          <SelectItem
-                            disabled={disabledKeys.includes(option.value)}
-                            key={option.value}
-                            value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </div>
+
+                  <FormControl>
+                    <div className="grid grid-cols-4 col-span-2 space-x-2">
+                      {options.map(option => (
+                        <Toggle
+                          variant="outline"
+                          key={option.value}
+                          aria-label={option.value}
+                          pressed={option.value === field.value}
+                          disabled={disabledKeys.includes(option.value)}
+                          onPressedChange={isSelected => {
+                            field.onChange(isSelected ? option.value : '');
+                            getDisabledKeys();
+                          }}>
+                          <span>{option.label}</span>
+                        </Toggle>
+                      ))}
+                      <FormMessage />
+                    </div>
+                  </FormControl>
                 </div>
               </FormItem>
             )}

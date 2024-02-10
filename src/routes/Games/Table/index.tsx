@@ -43,7 +43,11 @@ const Table = () => {
       </div>
       <DialogResponsive
         isOpen={gamePlayersState.isOpen}
-        setIsOpen={props => setGamePlayersState({id: '', isOpen: props})}>
+        setIsOpen={props => {
+          if (!props) {
+            setGamePlayersState({id: '', isOpen: props});
+          }
+        }}>
         <GamePlayers
           onClose={() => setGamePlayersState({id: '', isOpen: false})}
           id={gamePlayersState.id}

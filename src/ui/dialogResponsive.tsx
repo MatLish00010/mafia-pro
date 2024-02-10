@@ -30,7 +30,6 @@ const DialogResponsive = ({children, buttonLabel, classNames, isOpen, setIsOpen}
             </Button>
           </DialogTrigger>
         )}
-
         <DialogContent>{children}</DialogContent>
       </Dialog>
     );
