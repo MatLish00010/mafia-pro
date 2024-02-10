@@ -6,36 +6,42 @@ import {User} from '@/types/User.ts';
 export const columns: ColumnDef<RatingPlayer & {nick: User['nick']}>[] = [
   {
     accessorKey: 'nick',
-
     header: 'Nick',
   },
   {
     accessorKey: 'countOfGames',
-    header: 'Games',
+    header: () => <div className="text-center">Games</div>,
+    cell: props => <div className="text-center">{props.row.getValue('countOfGames')}</div>,
   },
   {
     accessorKey: 'winGames',
-    header: 'Win',
+    header: () => <div className="text-center">Win</div>,
+    cell: props => <div className="text-center">{props.row.getValue('winGames')}</div>,
   },
   {
     accessorKey: 'loseGames',
-    header: 'Lose',
+    header: () => <div className="text-center">Lose</div>,
+    cell: props => <div className="text-center">{props.row.getValue('loseGames')}</div>,
   },
 
   {
     accessorKey: 'vot',
-    header: 'Vot',
+    header: () => <div className="text-center">Vot</div>,
+    cell: props => <div className="text-center">{props.row.getValue('vot')}</div>,
   },
   {
     accessorKey: 'breakLose',
-    header: 'Break',
+    header: () => <div className="text-center">Break</div>,
+    cell: props => <div className="text-center">{props.row.getValue('breakLose')}</div>,
   },
   {
     accessorKey: 'removed',
-    header: 'Removed',
+    header: () => <div className="text-center">Removed</div>,
+    cell: props => <div className="text-center">{props.row.getValue('removed')}</div>,
   },
   {
     accessorKey: 'sum',
-    header: 'Points',
+    header: () => <div className="text-center">Sum</div>,
+    cell: props => <div className="text-center">{props.row.getValue('sum')}</div>,
   },
 ];

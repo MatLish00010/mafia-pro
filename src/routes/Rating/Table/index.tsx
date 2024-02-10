@@ -5,7 +5,6 @@ import {columns} from './columns.tsx';
 
 const Table = () => {
   const {data, isLoading} = useRating();
-  console.log('data:', data);
   return <>{data && <DataTable columns={columns} data={data} isLoading={isLoading} />}</>;
 };
 

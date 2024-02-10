@@ -31,8 +31,6 @@ const Header = ({value, className}: {value: string; className?: ClassValue[]}) =
 };
 
 const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
-  console.log('defaultValues');
-  console.log('players:', players);
   const form = useForm<DataForm>({
     defaultValues: {
       wills: defaultValues?.length
