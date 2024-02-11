@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import {Team} from '@/types/Team.ts';
 import {Button} from '@/ui/button.tsx';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/ui/form';
-import {RadioGroup, RadioGroupItem} from '@/ui/radio-group.tsx';
+import {Toggle} from '@/ui/toggle.tsx';
 
 type Props = {
   onSubmit: (winner: Team) => void;
@@ -40,23 +40,26 @@ const Winner = ({onSubmit, defaultValues}: Props) => {
             <FormItem className="flex flex-col items-center flex-1 ">
               <FormLabel>Select the winning team</FormLabel>
               <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col justify-center flex-1">
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="RED" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Red</FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="BLACK" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Black</FormLabel>
-                  </FormItem>
-                </RadioGroup>
+                <div className="flex items-center gap-5 flex-1">
+                  <Toggle
+                    variant="outline"
+                    aria-label={'Red'}
+                    pressed={'RED' === field.value}
+                    onPressedChange={isSelected => {
+                      field.onChange(isSelected ? 'RED' : '');
+                    }}>
+                    <span>Red</span>
+                  </Toggle>
+                  <Toggle
+                    variant="outline"
+                    aria-label={'Black'}
+                    pressed={field.value === 'BLACK'}
+                    onPressedChange={isSelected => {
+                      field.onChange(isSelected ? 'BLACK' : '');
+                    }}>
+                    <span>Black</span>
+                  </Toggle>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
