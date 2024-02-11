@@ -1,5 +1,5 @@
 export type DataForm = {
-  wills: {
+  fines: {
     removed: boolean;
     vot: boolean;
     breakLose: boolean;

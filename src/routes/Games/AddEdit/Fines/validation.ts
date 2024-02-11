@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const validation = yup.object().shape({
-  wills: yup
+  fines: yup
     .array()
     .of(
       yup.object().shape({

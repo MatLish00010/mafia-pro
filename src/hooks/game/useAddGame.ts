@@ -18,9 +18,9 @@ const useAddGame = (callback?: () => void) => {
         date: format(props.date, 'yyyy-MM-dd'),
         notes: '',
         players_data: props.players.map((player, index) => {
-          const {roles, points, firstKilled, wills} = props;
-          const {isWinner, bonusesWinners, bonusesLosers, wills: test_wills} = points[index];
-          const {breakLose, removed, vot, handLose} = wills[index];
+          const {roles, points, firstKilled, fines} = props;
+          const {isWinner, bonusesWinners, bonusesLosers, wills} = points[index];
+          const {breakLose, removed, vot, handLose} = fines[index];
           const {position, bonuses} = firstKilled;
 
           return {
@@ -35,7 +35,7 @@ const useAddGame = (callback?: () => void) => {
             win: isWinner,
             position: index,
             hand_lose: handLose,
-            wills: test_wills,
+            wills,
           };
         }),
       });

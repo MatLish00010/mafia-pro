@@ -17,8 +17,8 @@ import {validation} from './validation.ts';
 type Props = {
   winnerTeam: Team;
   players: User[];
-  onSubmit: (data: DataForm['wills']) => void;
-  defaultValues?: DataForm['wills'];
+  onSubmit: (data: DataForm['fines']) => void;
+  defaultValues?: DataForm['fines'];
   points: State['points'];
 };
 
@@ -30,10 +30,10 @@ const Header = ({value, className}: {value: string; className?: ClassValue[]}) =
   );
 };
 
-const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
+const Fines = ({points, players, onSubmit, defaultValues}: Props) => {
   const form = useForm<DataForm>({
     defaultValues: {
-      wills: defaultValues?.length
+      fines: defaultValues?.length
         ? defaultValues
         : players.map(() => ({
             removed: false,
@@ -48,17 +48,17 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
 
   const {fields} = useFieldArray({
     control: form.control,
-    name: 'wills',
+    name: 'fines',
   });
 
-  const wills = form.watch('wills');
-  const indexOfSelectedGTV = wills.findIndex(f => f.vot);
-  const indexOfSelectedHandLose = wills.findIndex(f => f.handLose);
+  const fines = form.watch('fines');
+  const indexOfSelectedGTV = fines.findIndex(f => f.vot);
+  const indexOfSelectedHandLose = fines.findIndex(f => f.handLose);
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(data => onSubmit(data.wills))}
+        onSubmit={form.handleSubmit(data => onSubmit(data.fines))}
         className="flex flex-col justify-between flex-1 gap-4">
         <div className="flex flex-col gap-5 relative">
           {fields.map((item, index) => (
@@ -75,7 +75,7 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
                 {index === 0 && <Header value="Removed" className={['translate-x-[-33%]']} />}
                 <FormField
                   control={form.control}
-                  name={`wills.${index}.removed`}
+                  name={`fines.${index}.removed`}
                   render={({field}) => {
                     return (
                       <FormItem>
@@ -91,7 +91,7 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
                 {index === 0 && <Header value="Hand lose" className={['translate-x-[-34%]']} />}
                 <FormField
                   control={form.control}
-                  name={`wills.${index}.handLose`}
+                  name={`fines.${index}.handLose`}
                   render={({field}) => {
                     return (
                       <FormItem>
@@ -115,7 +115,7 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
                 {index === 0 && <Header value="Break" className={['translate-x-[-24%]']} />}
                 <FormField
                   control={form.control}
-                  name={`wills.${index}.breakLose`}
+                  name={`fines.${index}.breakLose`}
                   render={({field}) => {
                     return (
                       <FormItem>
@@ -135,7 +135,7 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
                 {index === 0 && <Header value="VOT" className={['translate-x-[-15%]']} />}
                 <FormField
                   control={form.control}
-                  name={`wills.${index}.vot`}
+                  name={`fines.${index}.vot`}
                   render={({field}) => {
                     return (
                       <FormItem>
@@ -165,4 +165,4 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
   );
 };
 
-export default Wills;
+export default Fines;

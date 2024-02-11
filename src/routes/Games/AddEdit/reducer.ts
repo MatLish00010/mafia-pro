@@ -15,7 +15,7 @@ export type State = {
     bonusesLosers: number;
     wills: number;
   }[];
-  wills: {
+  fines: {
     removed: boolean;
     handLose: boolean;
     vot: boolean;
@@ -33,7 +33,7 @@ export const initialState: State = {
     bonuses: 0,
   },
   points: [],
-  wills: [],
+  fines: [],
 };
 
 export type Action =
@@ -48,7 +48,7 @@ export type Action =
       };
     }
   | {type: 'ADD_POINTS'; points: State['points']}
-  | {type: 'ADD_WILLS'; wills: State['wills']};
+  | {type: 'ADD_WILLS'; fines: State['fines']};
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -69,7 +69,7 @@ export const reducer = (state: State, action: Action): State => {
     case 'ADD_POINTS':
       return {...state, points: action.points};
     case 'ADD_WILLS':
-      return {...state, wills: action.wills};
+      return {...state, fines: action.fines};
     default:
       return state;
   }

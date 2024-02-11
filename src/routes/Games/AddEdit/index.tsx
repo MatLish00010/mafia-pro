@@ -3,17 +3,17 @@ import {useReducer, useState} from 'react';
 import useAddGame from '@/hooks/game/useAddGame.ts';
 import useUsers from '@/hooks/user/useUsers.ts';
 import {cn} from '@/lib/utils.ts';
-import FinalTable from '@/routes/Games/AddEdit/FinalTable';
-import FirstKilled from '@/routes/Games/AddEdit/FirstKilled';
-import Points from '@/routes/Games/AddEdit/Points';
-import Wills from '@/routes/Games/AddEdit/Wills';
 import {Role} from '@/types/Role.ts';
 import {Team} from '@/types/Team.ts';
 import {User} from '@/types/User.ts';
 import DialogResponsive from '@/ui/dialogResponsive.tsx';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/ui/tabs.tsx';
 
+import FinalTable from './FinalTable';
+import Fines from './Fines';
+import FirstKilled from './FirstKilled';
 import Players from './Players';
+import Points from './Points';
 import Roles from './Roles';
 import Winner from './Winner';
 import {State, initialState, reducer} from './reducer.ts';
@@ -84,10 +84,10 @@ const AddEdit = ({onClose}: Props) => {
     setCurrentTub(TabVariant.FINES);
   };
 
-  const onSubmitWills = (wills: State['wills']) => {
+  const onSubmitWills = (fines: State['fines']) => {
     dispatch({
       type: 'ADD_WILLS',
-      wills,
+      fines,
     });
     setIsOpenFinalTable(true);
   };
@@ -195,12 +195,12 @@ const AddEdit = ({onClose}: Props) => {
         <TabsContent
           value={TabVariant.FINES}
           className={cn([currentTub === TabVariant.FINES && 'flex', 'flex-1'])}>
-          <Wills
+          <Fines
             players={state.players}
             points={state.points}
             winnerTeam={state.winner}
             onSubmit={onSubmitWills}
-            defaultValues={state.wills}
+            defaultValues={state.fines}
           />
         </TabsContent>
       </Tabs>
