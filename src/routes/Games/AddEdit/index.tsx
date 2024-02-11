@@ -1,6 +1,7 @@
 import {useReducer, useState} from 'react';
 
 import useAddGame from '@/hooks/game/useAddGame.ts';
+import useUsers from '@/hooks/user/useUsers.ts';
 import {cn} from '@/lib/utils.ts';
 import FinalTable from '@/routes/Games/AddEdit/FinalTable';
 import FirstKilled from '@/routes/Games/AddEdit/FirstKilled';
@@ -35,6 +36,7 @@ const AddEdit = ({onClose}: Props) => {
   const [isOpenFinalTable, setIsOpenFinalTable] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const {mutate} = useAddGame();
+  const {data} = useUsers();
 
   const onSubmitPlayers = (props: {players: User[]; date: Date}) => {
     dispatch({type: 'ADD_PLAYERS', props});
@@ -129,6 +131,7 @@ const AddEdit = ({onClose}: Props) => {
         </TabsList>
         <TabsContent value={TabVariant.PLAYERS} className="flex-1">
           <Players
+            users={data || []}
             onSubmit={onSubmitPlayers}
             defaultValues={{
               players: state.players,

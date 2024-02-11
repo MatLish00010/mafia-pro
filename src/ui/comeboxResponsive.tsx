@@ -18,7 +18,7 @@ import {
 import {Drawer, DrawerContent, DrawerTrigger} from '@/ui/drawer';
 import {Popover, PopoverContent, PopoverTrigger} from '@/ui/popover';
 
-type ItemList = {
+export type ItemList = {
   label: string;
   id: string;
 };
