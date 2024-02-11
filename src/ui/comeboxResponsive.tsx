@@ -1,5 +1,3 @@
-'use client';
-
 import {CaretSortIcon} from '@radix-ui/react-icons';
 import {ClassValue} from 'clsx';
 import * as React from 'react';

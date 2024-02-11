@@ -11,6 +11,7 @@ type Props = {
 
 const GamePlayers = ({id}: Props) => {
   const {data, isLoading} = useGamePlayers({id});
+
   return (
     <div>
       {data && (

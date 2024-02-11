@@ -31,6 +31,21 @@ type Props = {
   onClose: () => void;
 };
 
+type TabProps = {
+  value: TabVariant;
+  onClick: () => void;
+  disabled?: boolean;
+  label: string;
+};
+
+const Tab = ({value, onClick, disabled, label}: TabProps) => {
+  return (
+    <TabsTrigger disabled={disabled} value={value} onClick={onClick} className="flex-1">
+      {label}
+    </TabsTrigger>
+  );
+};
+
 const AddEdit = ({onClose}: Props) => {
   const [currentTub, setCurrentTub] = useState<TabVariant>(TabVariant.PLAYERS);
   const [isOpenFinalTable, setIsOpenFinalTable] = useState(false);
@@ -83,51 +98,57 @@ const AddEdit = ({onClose}: Props) => {
     onClose();
   };
 
+  const tabsConfig: TabProps[] = [
+    {
+      value: TabVariant.PLAYERS,
+      onClick: () => setCurrentTub(TabVariant.PLAYERS),
+      label: 'Players',
+    },
+    {
+      value: TabVariant.ROLES,
+      onClick: () => setCurrentTub(TabVariant.ROLES),
+      disabled: !state.players.length,
+      label: 'Roles',
+    },
+    {
+      value: TabVariant.WINNER,
+      onClick: () => setCurrentTub(TabVariant.WINNER),
+      disabled: !state.roles.length,
+      label: 'Win',
+    },
+    {
+      value: TabVariant.FIRST_KILLED,
+      onClick: () => setCurrentTub(TabVariant.FIRST_KILLED),
+      disabled: !state.roles.length,
+      label: 'FK',
+    },
+    {
+      value: TabVariant.POINTS,
+      onClick: () => setCurrentTub(TabVariant.POINTS),
+      disabled: !state.roles.length,
+      label: 'Points',
+    },
+    {
+      value: TabVariant.FINES,
+      onClick: () => setCurrentTub(TabVariant.FINES),
+      disabled: !state.points.length,
+      label: 'Fines',
+    },
+  ];
+
   return (
     <>
       <Tabs value={currentTub} className="min-h-[500px] mt-4 flex flex-col gap-7">
         <TabsList className="w-full">
-          <TabsTrigger
-            value={TabVariant.PLAYERS}
-            onClick={() => setCurrentTub(TabVariant.PLAYERS)}
-            className="flex-1">
-            Players
-          </TabsTrigger>
-          <TabsTrigger
-            disabled={!state.players.length}
-            value={TabVariant.ROLES}
-            onClick={() => setCurrentTub(TabVariant.ROLES)}
-            className="flex-1">
-            Roles
-          </TabsTrigger>
-          <TabsTrigger
-            disabled={!state.roles.length}
-            value={TabVariant.WINNER}
-            onClick={() => setCurrentTub(TabVariant.WINNER)}
-            className="flex-1">
-            Win
-          </TabsTrigger>
-          <TabsTrigger
-            disabled={!state.roles.length}
-            value={TabVariant.FIRST_KILLED}
-            onClick={() => setCurrentTub(TabVariant.FIRST_KILLED)}
-            className="flex-1">
-            FK
-          </TabsTrigger>
-          <TabsTrigger
-            disabled={!state.roles.length}
-            value={TabVariant.POINTS}
-            onClick={() => setCurrentTub(TabVariant.POINTS)}
-            className="flex-1">
-            Points
-          </TabsTrigger>
-          <TabsTrigger
-            disabled={!state.points.length}
-            value={TabVariant.FINES}
-            onClick={() => setCurrentTub(TabVariant.FINES)}
-            className="flex-1">
-            Fines
-          </TabsTrigger>
+          {tabsConfig.map(item => (
+            <Tab
+              key={item.value}
+              value={item.value}
+              disabled={item.disabled}
+              onClick={item.onClick}
+              label={item.label}
+            />
+          ))}
         </TabsList>
         <TabsContent value={TabVariant.PLAYERS} className="flex-1">
           <Players
