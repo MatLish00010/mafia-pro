@@ -13,6 +13,7 @@ export type State = {
     role: Role;
     bonusesWinners: number;
     bonusesLosers: number;
+    wills: number;
   }[];
   wills: {
     removed: boolean;

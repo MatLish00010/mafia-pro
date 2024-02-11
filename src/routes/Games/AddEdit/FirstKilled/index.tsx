@@ -3,6 +3,7 @@ import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 
+import {Role} from '@/types/Role.ts';
 import {User} from '@/types/User.ts';
 import {Button} from '@/ui/button.tsx';
 import {Checkbox} from '@/ui/checkbox.tsx';
@@ -17,6 +18,7 @@ type DataForm = {
 
 type Props = {
   players: User[];
+  roles: Role[];
   onSubmit: (props: {firstKilled: null | number; bonuses: number}) => void;
   defaultValues?: {
     firstKilledPosition: DataForm['firstKilledPosition'];
@@ -24,7 +26,7 @@ type Props = {
   };
 };
 
-const FirstKilled = ({players, onSubmit, defaultValues}: Props) => {
+const FirstKilled = ({players, onSubmit, defaultValues, roles}: Props) => {
   const form = useForm<DataForm>({
     defaultValues: defaultValues || {
       firstKilledPosition: null,
@@ -85,6 +87,7 @@ const FirstKilled = ({players, onSubmit, defaultValues}: Props) => {
                       </FormLabel>
                       <FormControl>
                         <Checkbox
+                          disabled={roles[index] === 'BLACK' || roles[index] === 'DON'}
                           checked={field.value === index}
                           onCheckedChange={props => {
                             field.onChange(props ? index : null);

@@ -29,6 +29,12 @@ export const validation = yup.object().shape({
       yup.object().shape({
         role: yup.string<Role>().required(),
         isWinner: yup.boolean().required(),
+        wills: yup
+          .number()
+          .typeError('Must be a number')
+          .min(-0.45, 'Min value can be -0.45')
+          .max(0.45, 'Max value can be 0.45')
+          .required(),
         bonusesWinners: yup
           .number()
           .test('maxBonusesWin', 'You can distribute 0.7 to winners', function () {

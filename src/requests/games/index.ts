@@ -21,6 +21,7 @@ export const addGame = async (dto: AddGameDto) =>
           break_and_lose: item.break_and_lose,
           bonuses: item.bonuses,
           position: item.position,
+          wills: item.wills,
         };
       }),
     })

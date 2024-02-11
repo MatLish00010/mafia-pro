@@ -107,9 +107,29 @@ export const getGamesWithDetails = async () =>
 
           if (detail.first_killed && detail.first_killed_boneses) {
             if (detail.first_killed_boneses > 0) {
-              rating[nick].ratingByRoles[role].wills.positive = detail.first_killed_boneses;
+              rating[nick].ratingByRoles[role].wills.positive = sumTwoNotIntegerNumbers(
+                detail.first_killed_boneses,
+                rating[nick].ratingByRoles[role].wills.positive,
+              );
             } else {
-              rating[nick].ratingByRoles[role].wills.negative = detail.first_killed_boneses;
+              rating[nick].ratingByRoles[role].wills.negative = sumTwoNotIntegerNumbers(
+                detail.first_killed_boneses,
+                rating[nick].ratingByRoles[role].wills.negative,
+              );
+            }
+          }
+
+          if (detail.wills) {
+            if (detail.wills > 0) {
+              rating[nick].ratingByRoles[role].wills.positive = sumTwoNotIntegerNumbers(
+                detail.wills,
+                rating[nick].ratingByRoles[role].wills.positive,
+              );
+            } else {
+              rating[nick].ratingByRoles[role].wills.negative = sumTwoNotIntegerNumbers(
+                detail.wills,
+                rating[nick].ratingByRoles[role].wills.negative,
+              );
             }
           }
 

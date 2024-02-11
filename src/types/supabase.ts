@@ -18,6 +18,7 @@ export type Database = {
           role: Database['public']['Enums']['role'];
           user_id: string;
           victory_opposing_team: boolean;
+          wills: number;
           win: boolean;
         };
         Insert: {
@@ -34,6 +35,7 @@ export type Database = {
           role: Database['public']['Enums']['role'];
           user_id: string;
           victory_opposing_team: boolean;
+          wills?: number;
           win: boolean;
         };
         Update: {
@@ -50,6 +52,7 @@ export type Database = {
           role?: Database['public']['Enums']['role'];
           user_id?: string;
           victory_opposing_team?: boolean;
+          wills?: number;
           win?: boolean;
         };
         Relationships: [

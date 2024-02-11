@@ -174,6 +174,7 @@ const AddEdit = ({onClose}: Props) => {
           <FirstKilled
             players={state.players}
             onSubmit={onSubmitFirstKilled}
+            roles={state.roles}
             defaultValues={{
               firstKilledPosition: state.firstKilled.position,
               bonuses: state.firstKilled.bonuses !== null ? state.firstKilled.bonuses : undefined,

@@ -16,6 +16,7 @@ export const calculatePoints = ({
   breakLose,
   bonuses,
   handLose,
+  wills,
 }: {
   fkBonuses: number;
   win: boolean;
@@ -24,6 +25,7 @@ export const calculatePoints = ({
   breakLose: boolean;
   bonuses: number;
   handLose: boolean;
+  wills: number;
 }) => {
   const winBonuses = win ? WIN : 0;
   const removedFines = removed ? REMOVED : 0;
@@ -37,6 +39,7 @@ export const calculatePoints = ({
       formatToThousand(votFines) +
       formatToThousand(breakLoseFines) +
       formatToThousand(bonuses) +
+      formatToThousand(wills) +
       formatToThousand(fkBonuses) +
       formatToThousand(handLoseFines),
   );

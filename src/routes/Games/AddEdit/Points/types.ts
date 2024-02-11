@@ -6,5 +6,6 @@ export type DataForm = {
     role: Role;
     bonusesWinners: number;
     bonusesLosers: number;
+    wills: number;
   }[];
 };

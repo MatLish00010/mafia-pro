@@ -43,6 +43,7 @@ const Points = ({roles, winnerTeam, players, onSubmit, defaultValues}: Props) =>
             breakLose: false,
             bonusesWinners: 0,
             bonusesLosers: 0,
+            wills: 0,
             role,
           })),
     },
@@ -62,7 +63,7 @@ const Points = ({roles, winnerTeam, players, onSubmit, defaultValues}: Props) =>
         className="flex flex-col justify-between flex-1 gap-4">
         <div className="flex flex-col gap-2 relative">
           {fields.map((item, index) => (
-            <div className="grid grid-cols-3 space-y-0 items-center" key={item.id}>
+            <div className="grid grid-cols-4 space-y-0 gap-5 items-center" key={item.id}>
               <FormLabel className=" flex flex-col ">
                 {index + 1}. {players[index].nick}:
               </FormLabel>
@@ -80,6 +81,21 @@ const Points = ({roles, winnerTeam, players, onSubmit, defaultValues}: Props) =>
                       ? `points.${index}.bonusesWinners`
                       : `points.${index}.bonusesLosers`
                   }
+                  render={({field}) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} type="number" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                {index === 0 && <Header value="Wills" />}
+                <FormField
+                  control={form.control}
+                  name={`points.${index}.wills`}
                   render={({field}) => (
                     <FormItem>
                       <FormControl>
