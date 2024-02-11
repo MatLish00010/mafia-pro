@@ -6,6 +6,7 @@ export const WIN = 1;
 export const BREAK_AND_LOSE = -0.4;
 export const MAX_BONUSES_LOSE = 0.4;
 export const MAX_BONUSES_WIN = 0.7;
+export const HAND_LOSE = -0.2;
 
 export const calculatePoints = ({
   fkBonuses,
@@ -14,6 +15,7 @@ export const calculatePoints = ({
   vot,
   breakLose,
   bonuses,
+  handLose,
 }: {
   fkBonuses: number;
   win: boolean;
@@ -21,11 +23,13 @@ export const calculatePoints = ({
   vot: boolean;
   breakLose: boolean;
   bonuses: number;
+  handLose: boolean;
 }) => {
   const winBonuses = win ? WIN : 0;
   const removedFines = removed ? REMOVED : 0;
   const votFines = vot ? VOT : 0;
   const breakLoseFines = breakLose ? BREAK_AND_LOSE : 0;
+  const handLoseFines = handLose ? HAND_LOSE : 0;
 
   return formatFromThousand(
     formatToThousand(winBonuses) +
@@ -33,6 +37,7 @@ export const calculatePoints = ({
       formatToThousand(votFines) +
       formatToThousand(breakLoseFines) +
       formatToThousand(bonuses) +
-      formatToThousand(fkBonuses),
+      formatToThousand(fkBonuses) +
+      formatToThousand(handLoseFines),
   );
 };

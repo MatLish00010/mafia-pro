@@ -20,8 +20,9 @@ const useAddGame = (callback?: () => void) => {
         players_data: props.players.map((player, index) => {
           const {roles, points, firstKilled, wills} = props;
           const {isWinner, bonusesWinners, bonusesLosers} = points[index];
-          const {breakLose, removed, vot} = wills[index];
+          const {breakLose, removed, vot, handLose} = wills[index];
           const {position, bonuses} = firstKilled;
+
           return {
             role: roles[index],
             user_id: player.id,
@@ -33,6 +34,7 @@ const useAddGame = (callback?: () => void) => {
             victory_opposing_team: vot,
             win: isWinner,
             position: index,
+            hand_lose: handLose,
           };
         }),
       });

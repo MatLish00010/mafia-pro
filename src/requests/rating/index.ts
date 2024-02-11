@@ -1,5 +1,5 @@
 import {formatFromThousand, formatToThousand, sumTwoNotIntegerNumbers} from '@/lib/numberFormat.ts';
-import {BREAK_AND_LOSE, REMOVED, VOT} from '@/lib/points.ts';
+import {BREAK_AND_LOSE, HAND_LOSE, REMOVED, VOT} from '@/lib/points.ts';
 import {supabase} from '@/providers/supabaseClient.ts';
 import {RatingPlayer} from '@/requests/rating/types.ts';
 import {User} from '@/types/User.ts';
@@ -50,6 +50,7 @@ const defaultValues: RatingPlayer = {
   removed: 0,
   breakLose: 0,
   sum: 0,
+  handLose: 0,
 };
 
 type Rating = {
@@ -125,6 +126,10 @@ export const getGamesWithDetails = async () =>
               BREAK_AND_LOSE,
               rating[nick].breakLose,
             );
+          }
+
+          if (detail.hand_lose) {
+            rating[nick].handLose = sumTwoNotIntegerNumbers(HAND_LOSE, rating[nick].handLose);
           }
 
           rating[nick].sum = formatFromThousand(

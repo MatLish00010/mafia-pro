@@ -16,6 +16,7 @@ export type State = {
   }[];
   wills: {
     removed: boolean;
+    handLose: boolean;
     vot: boolean;
     breakLose: boolean;
   }[];

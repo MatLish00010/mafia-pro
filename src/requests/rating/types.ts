@@ -19,4 +19,5 @@ export type RatingPlayer = {
   vot: number;
   breakLose: number;
   sum: number;
+  handLose: number;
 };

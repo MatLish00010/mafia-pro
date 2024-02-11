@@ -44,6 +44,7 @@ const FinalTable = ({state, onSubmit, onCancel}: Props) => {
       bonuses: state.points[index].isWinner
         ? state.points[index].bonusesWinners
         : state.points[index].bonusesLosers,
+      handLose: state.wills[index].handLose,
     }),
   }));
 

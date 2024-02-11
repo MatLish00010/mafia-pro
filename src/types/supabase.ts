@@ -11,6 +11,7 @@ export type Database = {
           first_killed: boolean;
           first_killed_boneses: number | null;
           game_id: string | null;
+          hand_lose: boolean;
           id: string;
           position: number;
           removed: boolean;
@@ -26,6 +27,7 @@ export type Database = {
           first_killed: boolean;
           first_killed_boneses?: number | null;
           game_id?: string | null;
+          hand_lose?: boolean;
           id?: string;
           position: number;
           removed: boolean;
@@ -41,6 +43,7 @@ export type Database = {
           first_killed?: boolean;
           first_killed_boneses?: number | null;
           game_id?: string | null;
+          hand_lose?: boolean;
           id?: string;
           position?: number;
           removed?: boolean;

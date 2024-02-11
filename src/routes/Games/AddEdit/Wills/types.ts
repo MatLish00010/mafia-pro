@@ -3,5 +3,6 @@ export type DataForm = {
     removed: boolean;
     vot: boolean;
     breakLose: boolean;
+    handLose: boolean;
   }[];
 };

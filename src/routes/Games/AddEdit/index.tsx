@@ -23,7 +23,7 @@ enum TabVariant {
   WINNER = 'winner',
   FIRST_KILLED = 'first_killed',
   POINTS = 'points',
-  WILLS = 'wills',
+  FINES = 'fines',
 }
 
 type Props = {
@@ -64,7 +64,7 @@ const AddEdit = ({onClose}: Props) => {
       type: 'ADD_POINTS',
       points,
     });
-    setCurrentTub(TabVariant.WILLS);
+    setCurrentTub(TabVariant.FINES);
   };
 
   const onSubmitWills = (wills: State['wills']) => {
@@ -121,10 +121,10 @@ const AddEdit = ({onClose}: Props) => {
           </TabsTrigger>
           <TabsTrigger
             disabled={!state.points.length}
-            value={TabVariant.WILLS}
-            onClick={() => setCurrentTub(TabVariant.WILLS)}
+            value={TabVariant.FINES}
+            onClick={() => setCurrentTub(TabVariant.FINES)}
             className="flex-1">
-            Wills
+            Fines
           </TabsTrigger>
         </TabsList>
         <TabsContent value={TabVariant.PLAYERS} className="flex-1">
@@ -168,8 +168,8 @@ const AddEdit = ({onClose}: Props) => {
           />
         </TabsContent>
         <TabsContent
-          value={TabVariant.WILLS}
-          className={cn([currentTub === TabVariant.WILLS && 'flex', 'flex-1'])}>
+          value={TabVariant.FINES}
+          className={cn([currentTub === TabVariant.FINES && 'flex', 'flex-1'])}>
           <Wills
             players={state.players}
             points={state.points}

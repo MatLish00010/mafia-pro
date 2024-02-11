@@ -39,6 +39,7 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
             removed: false,
             vot: false,
             breakLose: false,
+            handLose: false,
           })),
     },
     mode: 'onChange',
@@ -52,6 +53,7 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
 
   const wills = form.watch('wills');
   const indexOfSelectedGTV = wills.findIndex(f => f.vot);
+  const indexOfSelectedHandLose = wills.findIndex(f => f.handLose);
 
   return (
     <Form {...form}>
@@ -60,9 +62,9 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
         className="flex flex-col justify-between flex-1 gap-4">
         <div className="flex flex-col gap-5 relative">
           {fields.map((item, index) => (
-            <div className="grid grid-cols-5 space-y-0 items-center" key={item.id}>
+            <div className="grid grid-cols-6 space-y-0 items-center" key={item.id}>
               <FormLabel className=" flex flex-col ">
-                {index + 1}. {players[index].nick}:
+                {index + 1}.{players[index].nick}:
               </FormLabel>
               <Badge
                 variant={points[index].isWinner ? 'default' : 'destructive'}
@@ -86,6 +88,50 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
                 />
               </div>
               <div className="justify-self-center">
+                {index === 0 && <Header value="Hand lose" className={['translate-x-[-34%]']} />}
+                <FormField
+                  control={form.control}
+                  name={`wills.${index}.handLose`}
+                  render={({field}) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={
+                              (indexOfSelectedHandLose >= 0 && indexOfSelectedHandLose !== index) ||
+                              points[index].isWinner
+                            }
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+
+              <div className="justify-self-center">
+                {index === 0 && <Header value="Break" className={['translate-x-[-24%]']} />}
+                <FormField
+                  control={form.control}
+                  name={`wills.${index}.breakLose`}
+                  render={({field}) => {
+                    return (
+                      <FormItem>
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={points[index].isWinner}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+              <div className="justify-self-center">
                 {index === 0 && <Header value="VOT" className={['translate-x-[-15%]']} />}
                 <FormField
                   control={form.control}
@@ -101,26 +147,6 @@ const Wills = ({points, players, onSubmit, defaultValues}: Props) => {
                               (indexOfSelectedGTV >= 0 && indexOfSelectedGTV !== index) ||
                               points[index].isWinner
                             }
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
-              </div>
-              <div className="justify-self-center">
-                {index === 0 && <Header value="Break" className={['translate-x-[-24%]']} />}
-                <FormField
-                  control={form.control}
-                  name={`wills.${index}.breakLose`}
-                  render={({field}) => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            disabled={points[index].isWinner}
                           />
                         </FormControl>
                       </FormItem>

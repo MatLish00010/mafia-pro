@@ -14,6 +14,7 @@ export const addGame = async (dto: AddGameDto) =>
           win: item.win,
           user_id: item.user_id,
           first_killed: item.first_killed,
+          hand_lose: item.hand_lose,
           first_killed_boneses: item.first_killed_boneses || 0,
           removed: item.removed,
           victory_opposing_team: item.victory_opposing_team,

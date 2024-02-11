@@ -25,9 +25,9 @@ export const columns: ColumnDef<RatingPlayer & {nick: User['nick']}>[] = [
   },
 
   {
-    accessorKey: 'vot',
-    header: () => <div className="text-center">Vot</div>,
-    cell: props => <div className="text-center">{props.row.getValue('vot')}</div>,
+    accessorKey: 'handLose',
+    header: () => <div className="text-center">Hand Lose</div>,
+    cell: props => <div className="text-center">{props.row.getValue('handLose')}</div>,
   },
   {
     accessorKey: 'breakLose',
