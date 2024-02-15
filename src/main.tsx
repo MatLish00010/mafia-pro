@@ -4,9 +4,13 @@ import {RouterProvider, createBrowserRouter} from 'react-router-dom';
 
 import App from '@/App.tsx';
 import ErrorPage from '@/error-page.tsx';
+import {getSession} from '@/requests/session';
 import Index from '@/routes';
+import SignIn from '@/routes/Auth/SignIn';
+import SignUp from '@/routes/Auth/SignUp';
 import Games from '@/routes/Games';
 import Rating from '@/routes/Rating';
+import RequiredRouter from '@/routes/RequiredRouter';
 import Users from '@/routes/Users';
 
 import './App.css';
@@ -16,22 +20,37 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     errorElement: <ErrorPage />,
+
     children: [
       {
         errorElement: <ErrorPage />,
         children: [
           {index: true, element: <Index />},
           {
-            path: 'games',
-            element: <Games />,
+            path: '/signIn',
+            element: <SignIn />,
+          },
+          {
+            path: '/signUp',
+            element: <SignUp />,
           },
           {
             path: 'rating',
             element: <Rating />,
           },
           {
-            path: 'players',
-            element: <Users />,
+            element: <RequiredRouter />,
+            loader: getSession,
+            children: [
+              {
+                path: 'games',
+                element: <Games />,
+              },
+              {
+                path: 'players',
+                element: <Users />,
+              },
+            ],
           },
         ],
       },

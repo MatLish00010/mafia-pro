@@ -15,12 +15,14 @@ export const getUsers = async () =>
 export const addUser = async (dto: AddUserDto) =>
   supabase
     .from('users')
-    .insert({
-      nick: dto.nick,
-      data_birthday: dto.data_birthday ? format(new Date(dto.data_birthday), 'y-MM-d') : null,
-      first_visit: dto.first_visit ? format(new Date(dto.first_visit), 'y-MM-d') : null,
-      is_active_club_cart: dto.is_active_club_cart,
-    })
+    .insert([
+      {
+        nick: dto.nick,
+        data_birthday: dto.data_birthday ? format(new Date(dto.data_birthday), 'y-MM-d') : null,
+        first_visit: dto.first_visit ? format(new Date(dto.first_visit), 'y-MM-d') : null,
+        is_active_club_cart: dto.is_active_club_cart,
+      },
+    ])
     .select()
     .throwOnError()
     .then(data => data.data);
