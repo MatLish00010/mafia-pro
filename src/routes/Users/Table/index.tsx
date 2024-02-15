@@ -37,7 +37,11 @@ const Table = () => {
       <div className="flex flex-col gap-5">
         <DialogResponsive
           isOpen={addEdit.isOpen}
-          setIsOpen={val => setAddEdit({isOpen: val})}
+          setIsOpen={isOpen => {
+            if (!isOpen) {
+              setAddEdit({isOpen});
+            }
+          }}
           buttonLabel="Add new"
           classNames={{button: ['self-end']}}>
           <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
