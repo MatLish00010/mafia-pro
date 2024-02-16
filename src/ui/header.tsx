@@ -1,59 +1,157 @@
-import {useContext} from 'react';
+import {HamburgerMenuIcon} from '@radix-ui/react-icons';
+import {useContext, useState} from 'react';
 import {NavLink} from 'react-router-dom';
 
 import {SessionContext} from '@/context/SessionContext.ts';
 import useLogOut from '@/hooks/auth/useLogOut.tsx';
+import useMediaQuery from '@/hooks/screen/useMediaQuery.ts';
 import {cn} from '@/lib/utils.ts';
 import {Button} from '@/ui/button.tsx';
 import {ModeToggle} from '@/ui/mode-toggle.tsx';
+import {Sheet, SheetContent, SheetTrigger} from '@/ui/sheet.tsx';
 
 const getClassName = (isActive: boolean) =>
   cn([...[isActive && 'border-b-foreground border-b-2'], 'text-foreground ']);
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   const session = useContext(SessionContext);
   const {loading, logOut} = useLogOut();
+
+  const onClickItemNav = () => {
+    setIsOpen(false);
+  };
   return (
     <header className="bg-background mb-5">
       <div className="container mx-auto py-4 flex justify-between items-center">
-        <nav>
-          <ul className="flex gap-4">
-            <NavLink to={`/`} className={({isActive}) => getClassName(isActive)}>
-              Home
-            </NavLink>
-            <NavLink to={`/rating`} className={({isActive}) => getClassName(isActive)}>
-              Rating
-            </NavLink>
-            {session && (
-              <>
-                <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
-                  Games
+        {isDesktop ? (
+          <>
+            <nav>
+              <ul className="flex gap-4">
+                <NavLink to={`/`} className={({isActive}) => getClassName(isActive)}>
+                  Home
                 </NavLink>
-                <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
-                  Players
+                <NavLink to={`/rating`} className={({isActive}) => getClassName(isActive)}>
+                  Rating
                 </NavLink>
-              </>
-            )}
-          </ul>
-        </nav>
-        <ul className="flex gap-4 items-center">
-          {!session ? (
-            <>
-              <NavLink to={`/signIn`} className={({isActive}) => getClassName(isActive)}>
-                SignIn
-              </NavLink>
-              <NavLink to={`/signUp`} className={({isActive}) => getClassName(isActive)}>
-                SignUp
-              </NavLink>
-            </>
-          ) : (
-            <Button onClick={logOut} disabled={loading}>
-              Log Out
-            </Button>
-          )}
+                {session && (
+                  <>
+                    <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
+                      Games
+                    </NavLink>
+                    <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
+                      Players
+                    </NavLink>
+                  </>
+                )}
+              </ul>
+            </nav>
+            <ul className="flex gap-4 items-center">
+              {!session ? (
+                <>
+                  <NavLink to={`/signIn`} className={({isActive}) => getClassName(isActive)}>
+                    Sign In
+                  </NavLink>
+                  <NavLink to={`/signUp`} className={({isActive}) => getClassName(isActive)}>
+                    Sign Up
+                  </NavLink>
+                </>
+              ) : (
+                <Button onClick={logOut} disabled={loading}>
+                  Log Out
+                </Button>
+              )}
 
-          <ModeToggle />
-        </ul>
+              <ModeToggle />
+            </ul>
+          </>
+        ) : (
+          <Sheet open={isOpen} onOpenChange={open => setIsOpen(open)}>
+            <SheetTrigger onClick={() => setIsOpen(true)}>
+              <HamburgerMenuIcon className="h-4 w-4" />
+            </SheetTrigger>
+            <SheetContent side="left" className="flex flex-col gap-5">
+              <nav>
+                <ul className="flex flex-col gap-3 max-w-max">
+                  <li>
+                    <NavLink
+                      onClick={onClickItemNav}
+                      to={`/`}
+                      className={({isActive}) => getClassName(isActive)}>
+                      Home
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={onClickItemNav}
+                      to={`/rating`}
+                      className={({isActive}) => getClassName(isActive)}>
+                      Rating
+                    </NavLink>
+                  </li>
+
+                  {session && (
+                    <>
+                      <li>
+                        <NavLink
+                          onClick={onClickItemNav}
+                          to={`/games`}
+                          className={({isActive}) => getClassName(isActive)}>
+                          Games
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          onClick={onClickItemNav}
+                          to={`/players`}
+                          className={({isActive}) => getClassName(isActive)}>
+                          Players
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </nav>
+              <ul className="flex flex-col gap-2 max-w-max">
+                {!session ? (
+                  <>
+                    <li>
+                      <NavLink
+                        onClick={onClickItemNav}
+                        to={`/signIn`}
+                        className={({isActive}) => getClassName(isActive)}>
+                        Sign In
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={onClickItemNav}
+                        to={`/signUp`}
+                        className={({isActive}) => getClassName(isActive)}>
+                        Sign Up
+                      </NavLink>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <Button
+                      onClick={() => {
+                        logOut();
+                        onClickItemNav();
+                      }}
+                      disabled={loading}>
+                      Log Out
+                    </Button>
+                  </li>
+                )}
+                <li>
+                  <ModeToggle />
+                </li>
+              </ul>
+            </SheetContent>
+          </Sheet>
+        )}
       </div>
     </header>
   );
