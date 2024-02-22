@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
+import {useNavigate} from 'react-router-dom';
 import * as yup from 'yup';
 
 import {supabase} from '@/providers/supabaseClient.ts';
@@ -16,6 +17,8 @@ type DataForm = {
 };
 
 const Auth = () => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const {toast} = useToast();
   const queryClient = useQueryClient();
@@ -50,8 +53,10 @@ const Auth = () => {
       });
     } else {
       toast({
-        title: 'You need to confirm your email address before logging in',
+        title: 'Welcome!',
       });
+
+      navigate('/');
     }
 
     setLoading(false);

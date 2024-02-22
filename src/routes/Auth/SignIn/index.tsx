@@ -51,7 +51,7 @@ const Auth = () => {
     }
 
     if (res.data.session) {
-      navigate('/games');
+      navigate('/');
     }
   };
 
