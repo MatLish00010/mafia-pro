@@ -96,6 +96,35 @@ export type Database = {
         };
         Relationships: [];
       };
+      profiles: {
+        Row: {
+          created_at: string;
+          email: string | null;
+          id: string;
+          role: Database['public']['Enums']['profile_role'];
+        };
+        Insert: {
+          created_at?: string;
+          email?: string | null;
+          id?: string;
+          role: Database['public']['Enums']['profile_role'];
+        };
+        Update: {
+          created_at?: string;
+          email?: string | null;
+          id?: string;
+          role?: Database['public']['Enums']['profile_role'];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'public_profiles_id_fkey';
+            columns: ['id'];
+            isOneToOne: true;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       users: {
         Row: {
           created_at: string;
@@ -139,6 +168,7 @@ export type Database = {
       };
     };
     Enums: {
+      profile_role: 'CLUB_ADMIN' | 'ADMIN' | 'PLAYER';
       role: 'RED' | 'BLACK' | 'SHERIFF' | 'DON';
       team: 'RED' | 'BLACK';
     };

@@ -12,12 +12,20 @@ type Props = {
   buttonLabel?: string;
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
+  disabledButton?: boolean;
   classNames?: {
     button?: ClassValue[];
   };
 };
 
-const DialogResponsive = ({children, buttonLabel, classNames, isOpen, setIsOpen}: Props) => {
+const DialogResponsive = ({
+  children,
+  buttonLabel,
+  disabledButton,
+  classNames,
+  isOpen,
+  setIsOpen,
+}: Props) => {
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
   if (isDesktop) {
@@ -25,7 +33,7 @@ const DialogResponsive = ({children, buttonLabel, classNames, isOpen, setIsOpen}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         {buttonLabel && (
           <DialogTrigger asChild>
-            <Button variant="outline" className={cn(classNames?.button)}>
+            <Button variant="outline" disabled={disabledButton} className={cn(classNames?.button)}>
               {buttonLabel}
             </Button>
           </DialogTrigger>
@@ -38,7 +46,7 @@ const DialogResponsive = ({children, buttonLabel, classNames, isOpen, setIsOpen}
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       {buttonLabel && (
         <DrawerTrigger asChild>
-          <Button variant="outline" className={cn(classNames?.button)}>
+          <Button variant="outline" disabled={disabledButton} className={cn(classNames?.button)}>
             {buttonLabel}
           </Button>
         </DrawerTrigger>

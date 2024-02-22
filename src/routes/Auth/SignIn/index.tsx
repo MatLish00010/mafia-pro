@@ -1,4 +1,5 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useQueryClient} from '@tanstack/react-query';
 import {useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 import * as yup from 'yup';
@@ -16,6 +17,7 @@ type DataForm = {
 
 const Auth = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {toast} = useToast();
 
@@ -37,6 +39,8 @@ const Auth = () => {
       email: data.email,
       password: data.password,
     });
+
+    queryClient.invalidateQueries({queryKey: ['profile']});
 
     if (res.error) {
       toast({

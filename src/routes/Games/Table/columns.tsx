@@ -17,12 +17,14 @@ type Props = {
   editAction: (id: Game['id']) => void;
   removeAction: (id: Game['id']) => void;
   showPlayersAction: (id: Game['id']) => void;
+  enableRemove: boolean;
 };
 
 export const getColumns = ({
   editAction,
   removeAction,
   showPlayersAction,
+  enableRemove,
 }: Props): ColumnDef<Game>[] => [
   {
     accessorKey: 'date',
@@ -64,7 +66,10 @@ export const getColumns = ({
               Show players
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600" onClick={() => removeAction(currentItem.id)}>
+            <DropdownMenuItem
+              disabled={!enableRemove}
+              className="text-red-600"
+              onClick={() => removeAction(currentItem.id)}>
               Remove
               <Trash2 className="h-4 w-4 ml-5" />
             </DropdownMenuItem>

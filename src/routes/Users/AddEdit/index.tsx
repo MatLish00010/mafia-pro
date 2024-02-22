@@ -31,7 +31,6 @@ export type DataForm = {
 };
 
 const AddEdit = ({onOpenChange, prevData}: Props) => {
-  console.log('render:');
   const {data: users, isLoading} = useUsers();
   const form = useForm<DataForm>({
     defaultValues: {
@@ -48,8 +47,6 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
         nick: yup
           .string()
           .test('isUniq', 'Nick already used', val => {
-            console.log('val:', val);
-            console.log('prevData:', prevData);
             const isUsed =
               users?.find(user => user.nick.trim().toLowerCase() === val?.trim().toLowerCase()) &&
               val?.trim().toLowerCase() !== prevData?.nick?.trim().toLowerCase();

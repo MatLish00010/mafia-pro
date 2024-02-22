@@ -1,10 +1,11 @@
 import {HamburgerMenuIcon} from '@radix-ui/react-icons';
-import {useContext, useState} from 'react';
+import {useQueryClient} from '@tanstack/react-query';
+import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 
-import {SessionContext} from '@/context/SessionContext.ts';
 import useLogOut from '@/hooks/auth/useLogOut.tsx';
 import useMediaQuery from '@/hooks/screen/useMediaQuery.ts';
+import useProfile from '@/hooks/useProfile';
 import {cn} from '@/lib/utils.ts';
 import {Button} from '@/ui/button.tsx';
 import {ModeToggle} from '@/ui/mode-toggle.tsx';
@@ -16,14 +17,22 @@ const getClassName = (isActive: boolean) =>
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
-  const session = useContext(SessionContext);
+  const {data, isLoading} = useProfile();
   const {loading, logOut} = useLogOut();
+  const queryClient = useQueryClient();
+
+  const showForClubAdmin = data?.role === 'CLUB_ADMIN' || data?.role === 'ADMIN';
 
   const onClickItemNav = () => {
     setIsOpen(false);
   };
+
+  const onLogOut = async () => {
+    logOut().then(() => queryClient.invalidateQueries({queryKey: ['profile']}));
+  };
+
   return (
-    <header className="bg-background mb-5">
+    <header className="bg-background mb-5 min-h-[68px]">
       <div className="container mx-auto py-4 flex justify-between items-center">
         {isDesktop ? (
           <>
@@ -35,36 +44,36 @@ const Header = () => {
                 <NavLink to={`/rating`} className={({isActive}) => getClassName(isActive)}>
                   Rating
                 </NavLink>
-                {session && (
-                  <>
-                    <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
-                      Games
-                    </NavLink>
-                    <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
-                      Players
-                    </NavLink>
-                  </>
+                {showForClubAdmin && (
+                  <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
+                    Players
+                  </NavLink>
                 )}
+                <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
+                  Games
+                </NavLink>
               </ul>
             </nav>
-            <ul className="flex gap-4 items-center">
-              {!session ? (
-                <>
-                  <NavLink to={`/signIn`} className={({isActive}) => getClassName(isActive)}>
-                    Sign In
-                  </NavLink>
-                  <NavLink to={`/signUp`} className={({isActive}) => getClassName(isActive)}>
-                    Sign Up
-                  </NavLink>
-                </>
-              ) : (
-                <Button onClick={logOut} disabled={loading}>
-                  Log Out
-                </Button>
-              )}
+            {!isLoading && (
+              <ul className="flex gap-4 items-center">
+                {!data ? (
+                  <>
+                    <NavLink to={`/signIn`} className={({isActive}) => getClassName(isActive)}>
+                      Sign In
+                    </NavLink>
+                    <NavLink to={`/signUp`} className={({isActive}) => getClassName(isActive)}>
+                      Sign Up
+                    </NavLink>
+                  </>
+                ) : (
+                  <Button onClick={onLogOut} disabled={loading}>
+                    Log Out
+                  </Button>
+                )}
 
-              <ModeToggle />
-            </ul>
+                <ModeToggle />
+              </ul>
+            )}
           </>
         ) : (
           <Sheet open={isOpen} onOpenChange={open => setIsOpen(open)}>
@@ -91,64 +100,60 @@ const Header = () => {
                     </NavLink>
                   </li>
 
-                  {session && (
+                  {showForClubAdmin && (
+                    <NavLink
+                      onClick={onClickItemNav}
+                      to={`/players`}
+                      className={({isActive}) => getClassName(isActive)}>
+                      Players
+                    </NavLink>
+                  )}
+                  <NavLink
+                    onClick={onClickItemNav}
+                    to={`/games`}
+                    className={({isActive}) => getClassName(isActive)}>
+                    Games
+                  </NavLink>
+                </ul>
+              </nav>
+              {!isLoading && (
+                <ul className="flex flex-col gap-2 max-w-max">
+                  {!data ? (
                     <>
                       <li>
                         <NavLink
                           onClick={onClickItemNav}
-                          to={`/games`}
+                          to={`/signIn`}
                           className={({isActive}) => getClassName(isActive)}>
-                          Games
+                          Sign In
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
                           onClick={onClickItemNav}
-                          to={`/players`}
+                          to={`/signUp`}
                           className={({isActive}) => getClassName(isActive)}>
-                          Players
+                          Sign Up
                         </NavLink>
                       </li>
                     </>
+                  ) : (
+                    <li>
+                      <Button
+                        onClick={() => {
+                          onLogOut();
+                          onClickItemNav();
+                        }}
+                        disabled={loading}>
+                        Log Out
+                      </Button>
+                    </li>
                   )}
-                </ul>
-              </nav>
-              <ul className="flex flex-col gap-2 max-w-max">
-                {!session ? (
-                  <>
-                    <li>
-                      <NavLink
-                        onClick={onClickItemNav}
-                        to={`/signIn`}
-                        className={({isActive}) => getClassName(isActive)}>
-                        Sign In
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        onClick={onClickItemNav}
-                        to={`/signUp`}
-                        className={({isActive}) => getClassName(isActive)}>
-                        Sign Up
-                      </NavLink>
-                    </li>
-                  </>
-                ) : (
                   <li>
-                    <Button
-                      onClick={() => {
-                        logOut();
-                        onClickItemNav();
-                      }}
-                      disabled={loading}>
-                      Log Out
-                    </Button>
+                    <ModeToggle />
                   </li>
-                )}
-                <li>
-                  <ModeToggle />
-                </li>
-              </ul>
+                </ul>
+              )}
             </SheetContent>
           </Sheet>
         )}

@@ -2,6 +2,8 @@ import {useState} from 'react';
 
 import useGames from '@/hooks/game/useGames.ts';
 import useRemoveGame from '@/hooks/game/useRemoveGame.ts';
+import useProfile from '@/hooks/useProfile';
+import {accessConfig} from '@/lib/accessConfig.ts';
 import AddEdit from '@/routes/Games/AddEdit';
 import GamePlayers from '@/routes/Games/GamePlayers';
 import {Game} from '@/types/Game.ts';
@@ -11,6 +13,7 @@ import DialogResponsive from '@/ui/dialogResponsive.tsx';
 import {getColumns} from './columns.tsx';
 
 const Table = () => {
+  const {data: profile} = useProfile();
   const {data, isLoading} = useGames();
   const [isOpen, setIsOpen] = useState(false);
   const [gamePlayersState, setGamePlayersState] = useState<{
@@ -20,13 +23,13 @@ const Table = () => {
     isOpen: false,
     id: '',
   });
-
   const {mutate: removeMutate} = useRemoveGame();
 
   const columns = getColumns({
-    editAction: id => console.log('id:', id),
+    editAction: () => null,
     removeAction: removeMutate,
     showPlayersAction: id => setGamePlayersState({id, isOpen: true}),
+    enableRemove: accessConfig.admins.includes(profile?.role || ''),
   });
 
   return (
@@ -36,6 +39,7 @@ const Table = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           buttonLabel="Add new"
+          disabledButton={!accessConfig.admins.includes(profile?.role || '')}
           classNames={{button: ['self-end']}}>
           <AddEdit onClose={() => setIsOpen(false)} />
         </DialogResponsive>
