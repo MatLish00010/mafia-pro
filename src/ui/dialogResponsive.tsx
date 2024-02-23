@@ -43,7 +43,13 @@ const DialogResponsive = ({
     );
   }
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer
+      open={isOpen}
+      onOpenChange={props => {
+        if (!(props && isOpen)) {
+          setIsOpen(props);
+        }
+      }}>
       {buttonLabel && (
         <DrawerTrigger asChild>
           <Button variant="outline" disabled={disabledButton} className={cn(classNames?.button)}>

@@ -33,31 +33,25 @@ const Table = () => {
   });
 
   return (
-    <>
-      <div className="flex flex-col gap-5">
-        <DialogResponsive
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          buttonLabel="Add new"
-          disabledButton={!accessConfig.admins.includes(profile?.role || '')}
-          classNames={{button: ['self-end']}}>
-          <AddEdit onClose={() => setIsOpen(false)} />
-        </DialogResponsive>
-        {data && <DataTable columns={columns} data={data} isLoading={isLoading} hideSearch />}
-      </div>
+    <div className="flex flex-col gap-5">
+      <DialogResponsive
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        buttonLabel="Add new"
+        disabledButton={!accessConfig.admins.includes(profile?.role || '')}
+        classNames={{button: ['self-end']}}>
+        <AddEdit onClose={() => setIsOpen(false)} />
+      </DialogResponsive>
+      {data && <DataTable columns={columns} data={data} isLoading={isLoading} hideSearch />}
       <DialogResponsive
         isOpen={gamePlayersState.isOpen}
-        setIsOpen={props => {
-          if (!props) {
-            setGamePlayersState({id: '', isOpen: props});
-          }
-        }}>
+        setIsOpen={props => setGamePlayersState({id: '', isOpen: props})}>
         <GamePlayers
           onClose={() => setGamePlayersState({id: '', isOpen: false})}
           id={gamePlayersState.id}
         />
       </DialogResponsive>
-    </>
+    </div>
   );
 };
 

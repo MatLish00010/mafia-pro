@@ -9,6 +9,7 @@ export const getUsers = async () =>
   supabase
     .from('users')
     .select('*')
+    .order('nick', {ascending: true})
     .throwOnError()
     .then(res => res.data);
 

@@ -33,22 +33,16 @@ const Table = () => {
   });
 
   return (
-    <>
-      <div className="flex flex-col gap-5">
-        <DialogResponsive
-          isOpen={addEdit.isOpen}
-          setIsOpen={isOpen => {
-            if (!isOpen) {
-              setAddEdit({isOpen});
-            }
-          }}
-          buttonLabel="Add new"
-          classNames={{button: ['self-end']}}>
-          <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
-        </DialogResponsive>
-        {data && <DataTable columns={columns} data={data} isLoading={isLoading} />}
-      </div>
-    </>
+    <div className="flex flex-col gap-5">
+      <DialogResponsive
+        isOpen={addEdit.isOpen}
+        setIsOpen={handleAddEdit}
+        buttonLabel="Add new"
+        classNames={{button: ['self-end']}}>
+        <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
+      </DialogResponsive>
+      {data && <DataTable columns={columns} data={data} isLoading={isLoading} />}
+    </div>
   );
 };
 

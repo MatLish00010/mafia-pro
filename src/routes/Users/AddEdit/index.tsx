@@ -32,6 +32,7 @@ export type DataForm = {
 
 const AddEdit = ({onOpenChange, prevData}: Props) => {
   const {data: users, isLoading} = useUsers();
+
   const form = useForm<DataForm>({
     defaultValues: {
       nick: prevData?.nick || '',
