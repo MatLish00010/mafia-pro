@@ -1,4 +1,4 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {RouterProvider, createBrowserRouter} from 'react-router-dom';
@@ -14,16 +14,9 @@ import Games from '@/routes/Games';
 import Rating from '@/routes/Rating';
 import RequiredRouter from '@/routes/RequiredRouter';
 import Users from '@/routes/Users';
+import {useToast} from '@/ui/toast/use-toast.ts';
 
 import './App.css';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-    },
-  },
-});
 
 const router = createBrowserRouter([
   {
@@ -68,12 +61,37 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+const WrapperApp = () => {
+  const {toast} = useToast();
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+        retry: false,
+      },
+    },
+    queryCache: new QueryCache({
+      onError: error => {
+        toast({
+          variant: 'destructive',
+          description: error.message,
+        });
+      },
+    }),
+  });
+
+  return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
       </ThemeProvider>
     </QueryClientProvider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <WrapperApp />
   </React.StrictMode>,
 );

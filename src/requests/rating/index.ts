@@ -57,10 +57,12 @@ type Rating = {
   [key in User['nick']]: RatingPlayer;
 };
 
-export const getGamesWithDetails = async () =>
+export const getGamesWithDetails = async ({from, to}: {from: string; to: string}) =>
   supabase
     .from('games')
     .select(`*, game_details (*, users (*))`)
+    .gte('date', from)
+    .lte('date', to)
     .throwOnError()
     .then(res => {
       const data = res.data;
