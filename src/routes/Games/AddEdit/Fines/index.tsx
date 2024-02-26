@@ -53,7 +53,6 @@ const Fines = ({points, players, onSubmit, defaultValues}: Props) => {
 
   const fines = form.watch('fines');
   const indexOfSelectedGTV = fines.findIndex(f => f.vot);
-  const indexOfSelectedHandLose = fines.findIndex(f => f.handLose);
 
   return (
     <Form {...form}>
@@ -99,10 +98,7 @@ const Fines = ({points, players, onSubmit, defaultValues}: Props) => {
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            disabled={
-                              (indexOfSelectedHandLose >= 0 && indexOfSelectedHandLose !== index) ||
-                              points[index].isWinner
-                            }
+                            disabled={points[index].isWinner}
                           />
                         </FormControl>
                       </FormItem>
