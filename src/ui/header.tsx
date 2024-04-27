@@ -44,14 +44,19 @@ const Header = () => {
                 <NavLink to={`/rating`} className={({isActive}) => getClassName(isActive)}>
                   Rating
                 </NavLink>
+                <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
+                  Games
+                </NavLink>
                 {showForClubAdmin && (
                   <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
                     Players
                   </NavLink>
                 )}
-                <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
-                  Games
-                </NavLink>
+                {showForClubAdmin && (
+                  <NavLink to={`/club`} className={({isActive}) => getClassName(isActive)}>
+                    Club
+                  </NavLink>
+                )}
               </ul>
             </nav>
             {!isLoading && (
@@ -114,6 +119,14 @@ const Header = () => {
                     className={({isActive}) => getClassName(isActive)}>
                     Games
                   </NavLink>
+                  {showForClubAdmin && (
+                    <NavLink
+                      to={`/club`}
+                      onClick={onClickItemNav}
+                      className={({isActive}) => getClassName(isActive)}>
+                      Club
+                    </NavLink>
+                  )}
                 </ul>
               </nav>
               {!isLoading && (

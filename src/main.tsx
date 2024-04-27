@@ -10,6 +10,7 @@ import {getSessionWithProfile} from '@/requests/session';
 import Index from '@/routes';
 import SignIn from '@/routes/Auth/SignIn';
 import SignUp from '@/routes/Auth/SignUp';
+import Club from '@/routes/Club';
 import Games from '@/routes/Games';
 import Rating from '@/routes/Rating';
 import RequiredRouter from '@/routes/RequiredRouter';
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
               {
                 path: 'players',
                 element: <Users />,
+              },
+              {
+                path: 'club',
+                element: <Club />,
               },
             ],
           },
