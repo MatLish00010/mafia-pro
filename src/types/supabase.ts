@@ -3,6 +3,42 @@ export type Json = string | number | boolean | null | {[key: string]: Json | und
 export type Database = {
   public: {
     Tables: {
+      club_access: {
+        Row: {
+          club_id: string | null;
+          created_at: string;
+          id: number;
+          profile_id: string | null;
+        };
+        Insert: {
+          club_id?: string | null;
+          created_at?: string;
+          id?: number;
+          profile_id?: string | null;
+        };
+        Update: {
+          club_id?: string | null;
+          created_at?: string;
+          id?: number;
+          profile_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'club_access_club_id_fkey';
+            columns: ['club_id'];
+            isOneToOne: false;
+            referencedRelation: 'clubs';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'club_access_profile_id_fkey';
+            columns: ['profile_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       clubs: {
         Row: {
           created_at: string;
@@ -116,34 +152,24 @@ export type Database = {
       };
       profiles: {
         Row: {
-          club_id: string | null;
           created_at: string;
           email: string | null;
           id: string;
           role: Database['public']['Enums']['profile_role'];
         };
         Insert: {
-          club_id?: string | null;
           created_at?: string;
           email?: string | null;
           id?: string;
           role: Database['public']['Enums']['profile_role'];
         };
         Update: {
-          club_id?: string | null;
           created_at?: string;
           email?: string | null;
           id?: string;
           role?: Database['public']['Enums']['profile_role'];
         };
         Relationships: [
-          {
-            foreignKeyName: 'profiles_club_id_fkey';
-            columns: ['club_id'];
-            isOneToOne: false;
-            referencedRelation: 'clubs';
-            referencedColumns: ['id'];
-          },
           {
             foreignKeyName: 'public_profiles_id_fkey';
             columns: ['id'];

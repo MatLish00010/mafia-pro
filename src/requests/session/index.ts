@@ -9,7 +9,10 @@ export const getSession = async () =>
 export const getProfile = async (id: User['id']) =>
   supabase
     .from('profiles')
-    .select()
+    .select(
+      `*,
+    club_access (club_id)`,
+    )
     .eq('id', id)
     .throwOnError()
     .then(res => (res.data ? res.data[0] : null));
