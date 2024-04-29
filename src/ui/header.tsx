@@ -9,6 +9,7 @@ import useProfile from '@/hooks/useProfile';
 import {cn} from '@/lib/utils.ts';
 import {Button} from '@/ui/button.tsx';
 import {ModeToggle} from '@/ui/mode-toggle.tsx';
+import {Separator} from '@/ui/separator.tsx';
 import {Sheet, SheetContent, SheetTrigger} from '@/ui/sheet.tsx';
 
 const getClassName = (isActive: boolean) =>
@@ -32,8 +33,8 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-background mb-5 min-h-[68px]">
-      <div className="container mx-auto py-4 flex justify-between items-center">
+    <header className="bg-background mb-5 ">
+      <div className="container mx-auto min-h-[70px] py-4 flex justify-between items-center">
         {isDesktop ? (
           <>
             <nav>
@@ -47,7 +48,6 @@ const Header = () => {
                 <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
                   Games
                 </NavLink>
-
                 {showForClubAdmin && (
                   <NavLink to={`/club`} className={({isActive}) => getClassName(isActive)}>
                     Club
@@ -159,6 +159,7 @@ const Header = () => {
           </Sheet>
         )}
       </div>
+      <Separator />
     </header>
   );
 };
