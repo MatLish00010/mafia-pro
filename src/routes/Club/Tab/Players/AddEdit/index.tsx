@@ -7,9 +7,9 @@ import * as yup from 'yup';
 
 import useAddUser from '@/hooks/user/useAddUser.ts';
 import useEditUser from '@/hooks/user/useEditUser.ts';
-import useUsers from '@/hooks/user/useUsers.ts';
 import {cn} from '@/lib/utils.ts';
 import {User} from '@/types/User.ts';
+import {Tables} from '@/types/supabase.ts';
 import {Button} from '@/ui/button';
 import {Calendar} from '@/ui/calendar.tsx';
 import {DialogDescription, DialogHeader, DialogTitle} from '@/ui/dialog.tsx';
@@ -18,21 +18,21 @@ import {Input} from '@/ui/input.tsx';
 import {Popover, PopoverContent, PopoverTrigger} from '@/ui/popover';
 import {Switch} from '@/ui/switch.tsx';
 
-type Props = {
+interface Props {
   prevData?: User;
   onOpenChange: DialogProps['onOpenChange'];
-};
+  users: Tables<'users'>[];
+  club_id: Tables<'clubs'>['id'];
+}
 
-export type DataForm = {
+export interface DataForm {
   nick: string;
   data_birthday?: null | Date;
   first_visit?: null | Date;
   is_active_club_cart?: boolean;
-};
+}
 
-const AddEdit = ({onOpenChange, prevData}: Props) => {
-  const {data: users, isLoading} = useUsers();
-
+const AddEdit = ({onOpenChange, prevData, users, club_id}: Props) => {
   const form = useForm<DataForm>({
     defaultValues: {
       nick: prevData?.nick || '',
@@ -76,9 +76,9 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
       </DialogHeader>
       <Form {...form}>
         <form
-          className="space-y-8 flex flex-col"
+          className="space-y-8 flex flex-col items-start"
           onSubmit={form.handleSubmit(data =>
-            prevData ? mutateEdit({...data, id: prevData.id}) : mutate(data),
+            prevData ? mutateEdit({...data, id: prevData.id}) : mutate({body: data, club_id}),
           )}>
           <div className="flex flex-col gap-4">
             <FormField
@@ -118,8 +118,8 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
-                        captionLayout="dropdown-buttons"
-                        fromYear={1900}
+                        captionLayout="dropdown"
+                        fromYear={1970}
                         toYear={new Date().getFullYear()}
                         mode="single"
                         selected={field.value as Date}
@@ -183,10 +183,7 @@ const AddEdit = ({onOpenChange, prevData}: Props) => {
               )}
             />
           </div>
-          <Button
-            className="self-end"
-            disabled={isLoading || isPending || isPendingEdit}
-            type="submit">
+          <Button className="self-end" disabled={isPending || isPendingEdit} type="submit">
             Submit
           </Button>
         </form>

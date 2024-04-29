@@ -2,7 +2,13 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 
 import {addUser} from '@/requests/user';
 import {DataForm} from '@/routes/Users/AddEdit';
+import {Tables} from '@/types/supabase.ts';
 import {useToast} from '@/ui/toast/use-toast.ts';
+
+interface Props {
+  body: DataForm;
+  club_id: Tables<'clubs'>['id'];
+}
 
 const useAddUser = (callback?: () => void) => {
   const {toast} = useToast();
@@ -11,7 +17,7 @@ const useAddUser = (callback?: () => void) => {
 
   return useMutation({
     mutationKey: ['add user'],
-    mutationFn: (props: DataForm) => addUser(props),
+    mutationFn: (props: Props) => addUser({...props.body, club_id: props.club_id}),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['users']});
       toast({

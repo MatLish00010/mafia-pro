@@ -12,7 +12,7 @@ import {ModeToggle} from '@/ui/mode-toggle.tsx';
 import {Sheet, SheetContent, SheetTrigger} from '@/ui/sheet.tsx';
 
 const getClassName = (isActive: boolean) =>
-  cn([...[isActive && 'border-b-foreground border-b-2'], 'text-foreground ']);
+  cn([...[isActive && 'border-b-foreground border-b-[1px]'], 'text-foreground ']);
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,11 +47,7 @@ const Header = () => {
                 <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
                   Games
                 </NavLink>
-                {showForClubAdmin && (
-                  <NavLink to={`/players`} className={({isActive}) => getClassName(isActive)}>
-                    Players
-                  </NavLink>
-                )}
+
                 {showForClubAdmin && (
                   <NavLink to={`/club`} className={({isActive}) => getClassName(isActive)}>
                     Club
@@ -105,14 +101,6 @@ const Header = () => {
                     </NavLink>
                   </li>
 
-                  {showForClubAdmin && (
-                    <NavLink
-                      onClick={onClickItemNav}
-                      to={`/players`}
-                      className={({isActive}) => getClassName(isActive)}>
-                      Players
-                    </NavLink>
-                  )}
                   <NavLink
                     onClick={onClickItemNav}
                     to={`/games`}

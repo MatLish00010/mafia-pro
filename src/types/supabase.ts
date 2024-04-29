@@ -7,19 +7,19 @@ export type Database = {
         Row: {
           club_id: string | null;
           created_at: string;
-          id: number;
+          id: string;
           profile_id: string | null;
         };
         Insert: {
           club_id?: string | null;
           created_at?: string;
-          id?: number;
+          id?: string;
           profile_id?: string | null;
         };
         Update: {
           club_id?: string | null;
           created_at?: string;
-          id?: number;
+          id?: string;
           profile_id?: string | null;
         };
         Relationships: [
@@ -181,6 +181,7 @@ export type Database = {
       };
       users: {
         Row: {
+          club_id: string | null;
           created_at: string;
           data_birthday: string | null;
           first_visit: string | null;
@@ -189,6 +190,7 @@ export type Database = {
           nick: string;
         };
         Insert: {
+          club_id?: string | null;
           created_at?: string;
           data_birthday?: string | null;
           first_visit?: string | null;
@@ -197,6 +199,7 @@ export type Database = {
           nick: string;
         };
         Update: {
+          club_id?: string | null;
           created_at?: string;
           data_birthday?: string | null;
           first_visit?: string | null;
@@ -204,7 +207,15 @@ export type Database = {
           is_active_club_cart?: boolean;
           nick?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'users_club_id_fkey';
+            columns: ['club_id'];
+            isOneToOne: false;
+            referencedRelation: 'clubs';
+            referencedColumns: ['id'];
+          },
+        ];
       };
     };
     Views: {

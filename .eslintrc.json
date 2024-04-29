@@ -11,15 +11,9 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
-  "ignorePatterns": [
-    "dist",
-    ".eslintrc.cjs"
-  ],
+  "ignorePatterns": ["dist", ".eslintrc.cjs"],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "react-refresh",
-    "prettier"
-  ],
+  "plugins": ["react-refresh", "prettier"],
   "rules": {
     "@tanstack/query/exhaustive-deps": "error",
     "@tanstack/query/no-rest-destructuring": "warn",
@@ -31,7 +25,10 @@
       }
     ],
     "prettier/prettier": [
-      "error"
+      "warn",
+      {
+        "endOfLine": "auto"
+      }
     ]
   }
 }

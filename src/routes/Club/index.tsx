@@ -1,13 +1,30 @@
-import {useMemo} from 'react';
+import Tab from '@/routes/Club/Tab';
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/ui/tabs.tsx';
 
-import useClubs from '@/hooks/club/useClubs.ts';
-import useProfile from '@/hooks/useProfile';
+import useClub from './hooks/useClub.ts';
 
 export default function Club() {
-  const {data: profile, isLoading: isLoadingProfile} = useProfile();
-  const ids = useMemo(() => profile?.club_access.map(club => club.club_id) || undefined, [profile]);
+  const {clubs} = useClub();
 
-  const {data, isLoading} = useClubs(ids);
-  console.log('data:', data);
-  return <section>{isLoadingProfile || isLoading ? <h1>LOADING ...</h1> : <h1>Club</h1>}</section>;
+  return (
+    <section>
+      {!!clubs?.length && (
+        <Tabs defaultValue={clubs[0].id} className="flex flex-col items-center">
+          <TabsList className="max-w-max">
+            {clubs.map(club => (
+              <TabsTrigger key={club.id} value={club.id}>
+                {club.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {clubs.map(club => (
+            <TabsContent key={club.id} value={club.id} className="w-full pt-4">
+              <Tab club={club} />
+            </TabsContent>
+          ))}
+        </Tabs>
+      )}
+    </section>
+  );
 }

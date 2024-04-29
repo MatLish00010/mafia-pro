@@ -2,15 +2,20 @@ import {useState} from 'react';
 
 import useRemoveUser from '@/hooks/user/useRemoveUser.ts';
 import useUsers from '@/hooks/user/useUsers.ts';
-import AddEdit from '@/routes/Users/AddEdit';
+import getColumns from '@/routes/Club/Tab/Players/columns.tsx';
 import {User} from '@/types/User.ts';
+import {Tables} from '@/types/supabase.ts';
 import {DataTable} from '@/ui/data-table.tsx';
 import DialogResponsive from '@/ui/dialogResponsive.tsx';
 
-import {getColumns} from './columns.tsx';
+import AddEdit from './AddEdit';
 
-const Table = () => {
-  const {data, isLoading} = useUsers();
+interface Props {
+  club_id: Tables<'clubs'>['id'];
+}
+
+export default function Players({club_id}: Props) {
+  const {data, isLoading} = useUsers(club_id);
 
   const [addEdit, setAddEdit] = useState<{isOpen: boolean; prevData?: User}>({
     isOpen: false,
@@ -39,11 +44,14 @@ const Table = () => {
         setIsOpen={handleAddEdit}
         buttonLabel="Add new"
         classNames={{button: ['self-end']}}>
-        <AddEdit prevData={addEdit.prevData} onOpenChange={handleAddEdit} />
+        <AddEdit
+          prevData={addEdit.prevData}
+          onOpenChange={handleAddEdit}
+          users={data || []}
+          club_id={club_id}
+        />
       </DialogResponsive>
-      {data && <DataTable columns={columns} data={data} isLoading={isLoading} />}
+      <DataTable columns={columns} data={data || []} isLoading={isLoading} />
     </div>
   );
-};
-
-export default Table;
+}

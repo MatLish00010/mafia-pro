@@ -1,6 +1,6 @@
 import {User} from '@/types/User.ts';
 
-export type EditUserDto = {
+export type EditUser = {
   id: User['id'];
   nick: string;
   data_birthday?: null | Date;
