@@ -1,6 +1,7 @@
 import {Tables} from '@/types/supabase.ts';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/ui/tabs.tsx';
 
+import Games from './Games';
 import Players from './Players';
 
 interface Props {
@@ -20,7 +21,7 @@ export default function Tab({club}: Props) {
         <Players club_id={club.id} />
       </TabsContent>
       <TabsContent value="games" className="w-full">
-        games
+        <Games club_id={club.id} />
       </TabsContent>
       <TabsContent value="rating" className="w-full">
         rating

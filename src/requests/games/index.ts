@@ -1,14 +1,15 @@
 import {supabase} from '@/providers/supabaseClient.ts';
-import {AddGameDto} from '@/requests/games/dto/addGame.dto.ts';
+import {AddGame} from '@/requests/games/types/AddGame.ts';
 import {Game} from '@/types/Game.ts';
+import {Tables} from '@/types/supabase.ts';
 
-export const addGame = async (dto: AddGameDto) =>
+export const addGame = async (props: AddGame) =>
   supabase
     .rpc('add_game', {
-      winner_team: dto.winner,
-      game_date: dto.date,
-      game_notes: dto.notes || '',
-      players_data: dto.players_data.map(item => {
+      winner_team: props.winner,
+      game_date: props.date,
+      game_notes: props.notes || '',
+      players_data: props.players_data.map(item => {
         return {
           role: item.role,
           win: item.win,
@@ -24,16 +25,27 @@ export const addGame = async (dto: AddGameDto) =>
           wills: item.wills,
         };
       }),
+      club_id: props.club_id,
     })
     .throwOnError();
 
-export const getGames = async () =>
-  supabase
+export const getGames = async (club_id?: Tables<'clubs'>['id']) => {
+  if (club_id) {
+    return supabase
+      .from('games')
+      .select()
+      .eq('club_id', club_id)
+      .order('date', {ascending: false})
+      .throwOnError()
+      .then(res => res.data);
+  }
+  return supabase
     .from('games')
     .select()
     .order('date', {ascending: false})
     .throwOnError()
     .then(res => res.data);
+};
 
 export const getGamePlayers = async (id: Game['id']) =>
   supabase

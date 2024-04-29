@@ -15,6 +15,7 @@ const useRemoveGame = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['games']});
       queryClient.invalidateQueries({queryKey: ['rating']});
+
       toast({
         title: 'Game removed',
         description: 'Data will automatically updated',

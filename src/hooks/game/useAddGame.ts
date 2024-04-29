@@ -3,7 +3,13 @@ import {format} from 'date-fns';
 
 import {addGame} from '@/requests/games';
 import {State} from '@/routes/Games/AddEdit/reducer.ts';
+import {Tables} from '@/types/supabase.ts';
 import {useToast} from '@/ui/toast/use-toast.ts';
+
+interface Props {
+  body: State;
+  club_id: Tables<'clubs'>['id'];
+}
 
 const useAddGame = (callback?: () => void) => {
   const {toast} = useToast();
@@ -12,13 +18,14 @@ const useAddGame = (callback?: () => void) => {
 
   return useMutation({
     mutationKey: ['add game'],
-    mutationFn: (props: State) => {
+    mutationFn: ({body, club_id}: Props) => {
       return addGame({
-        winner: props.winner,
-        date: format(props.date, 'yyyy-MM-dd'),
+        winner: body.winner,
+        date: format(body.date, 'yyyy-MM-dd'),
+        club_id,
         notes: '',
-        players_data: props.players.map((player, index) => {
-          const {roles, points, firstKilled, fines} = props;
+        players_data: body.players.map((player, index) => {
+          const {roles, points, firstKilled, fines} = body;
           const {isWinner, bonusesWinners, bonusesLosers, wills} = points[index];
           const {breakLose, removed, vot, handLose} = fines[index];
           const {position, bonuses} = firstKilled;

@@ -1,5 +1,5 @@
 import {ColumnDef} from '@tanstack/react-table';
-import {MoreHorizontal, Trash2} from 'lucide-react';
+import {MoreHorizontal} from 'lucide-react';
 
 import {Game} from '@/types/Game.ts';
 import {Badge} from '@/ui/badge.tsx';
@@ -9,23 +9,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu.tsx';
 
-type Props = {
-  editAction: (id: Game['id']) => void;
-  removeAction: (id: Game['id']) => void;
+interface Props {
   showPlayersAction: (id: Game['id']) => void;
-  enableRemove: boolean;
-};
+}
 
-export const getColumns = ({
-  editAction,
-  removeAction,
-  showPlayersAction,
-  enableRemove,
-}: Props): ColumnDef<Game>[] => [
+export const getColumns = ({showPlayersAction}: Props): ColumnDef<Game>[] => [
   {
     accessorKey: 'date',
     header: 'Game Date',
@@ -59,19 +50,8 @@ export const getColumns = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem disabled onClick={() => editAction(currentItem.id)}>
-              Edit
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => showPlayersAction(currentItem.id)}>
               Show players
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              disabled={!enableRemove}
-              className="text-red-600"
-              onClick={() => removeAction(currentItem.id)}>
-              Remove
-              <Trash2 className="h-4 w-4 ml-5" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

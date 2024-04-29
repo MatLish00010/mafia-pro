@@ -128,6 +128,7 @@ export type Database = {
       };
       games: {
         Row: {
+          club_id: string | null;
           created_at: string;
           date: string;
           id: string;
@@ -135,6 +136,7 @@ export type Database = {
           winner: Database['public']['Enums']['team'];
         };
         Insert: {
+          club_id?: string | null;
           created_at?: string;
           date: string;
           id?: string;
@@ -142,13 +144,22 @@ export type Database = {
           winner: Database['public']['Enums']['team'];
         };
         Update: {
+          club_id?: string | null;
           created_at?: string;
           date?: string;
           id?: string;
           notes?: string | null;
           winner?: Database['public']['Enums']['team'];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'games_club_id_fkey';
+            columns: ['club_id'];
+            isOneToOne: false;
+            referencedRelation: 'clubs';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       profiles: {
         Row: {
@@ -227,7 +238,8 @@ export type Database = {
           winner_team: Database['public']['Enums']['team'];
           game_date: string;
           game_notes: string;
-          players_data: TablesInsert<'game_details'>[];
+          players_data: Database['public']['CompositeTypes']['player_data_type'][];
+          club_id: string;
         };
         Returns: undefined;
       };
@@ -238,7 +250,22 @@ export type Database = {
       team: 'RED' | 'BLACK';
     };
     CompositeTypes: {
-      [_ in never]: never;
+      player_data_type: {
+        id: string | null;
+        created_at: string | null;
+        user_id: string | null;
+        role: Database['public']['Enums']['role'] | null;
+        win: boolean | null;
+        first_killed: boolean | null;
+        first_killed_bonuses: number | null;
+        removed: boolean | null;
+        victory_opposing_team: boolean | null;
+        break_and_lose: boolean | null;
+        bonuses: number | null;
+        position: number | null;
+        hand_lose: boolean | null;
+        wills: number | null;
+      };
     };
   };
 };
