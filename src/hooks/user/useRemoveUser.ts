@@ -12,8 +12,17 @@ const useRemoveUser = (callback?: () => void) => {
   return useMutation({
     mutationKey: ['remove user'],
     mutationFn: (props: User['id']) => removeUser(props),
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['users']});
+    onSuccess: data => {
+      const currentItem = data ? data[0] : undefined;
+
+      if (currentItem) {
+        queryClient.setQueryData(
+          ['users', currentItem.club_id],
+          (oldData: (typeof currentItem)[]) => {
+            return oldData.filter(item => item.id !== currentItem.id);
+          },
+        );
+      }
       toast({
         title: 'Player removed',
         description: 'Data will automatically updated',

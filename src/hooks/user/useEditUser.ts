@@ -13,8 +13,26 @@ const useEditUser = (callback?: () => void) => {
   return useMutation({
     mutationKey: ['edit user'],
     mutationFn: (props: DataForm & {id: User['id']}) => editUser(props),
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['users']});
+    onSuccess: data => {
+      const currentItem = data ? data[0] : undefined;
+      if (currentItem) {
+        queryClient.setQueryData(
+          ['users', currentItem.club_id],
+          (oldData: (typeof currentItem)[]) => {
+            const dataIndex = oldData.findIndex(item => item.id === currentItem.id);
+
+            if (dataIndex !== -1) {
+              const newArr = [...oldData];
+              newArr[dataIndex] = currentItem;
+
+              return newArr;
+            }
+
+            return oldData;
+          },
+        );
+      }
+
       toast({
         title: 'Player updated',
         description: 'Data will automatically updated',

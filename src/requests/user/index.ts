@@ -50,6 +50,13 @@ export const editUser = async (dto: EditUser) =>
       is_active_club_cart: dto.is_active_club_cart,
     })
     .eq('id', dto.id)
-    .select();
-
-export const removeUser = async (id: User['id']) => supabase.from('users').delete().eq('id', id);
+    .select()
+    .then(data => data.data);
+export const removeUser = async (id: User['id']) =>
+  supabase
+    .from('users')
+    .delete()
+    .eq('id', id)
+    .select()
+    .throwOnError()
+    .then(data => data.data);
