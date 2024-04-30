@@ -11,6 +11,7 @@ import {Button} from '@/ui/button.tsx';
 import {ModeToggle} from '@/ui/mode-toggle.tsx';
 import {Separator} from '@/ui/separator.tsx';
 import {Sheet, SheetContent, SheetTrigger} from '@/ui/sheet.tsx';
+import {Skeleton} from '@/ui/skeleton.tsx';
 
 const getClassName = (isActive: boolean) =>
   cn([...[isActive && 'border-b-foreground border-b-[1px]'], 'text-foreground ']);
@@ -48,33 +49,39 @@ const Header = () => {
                 <NavLink to={`/games`} className={({isActive}) => getClassName(isActive)}>
                   Games
                 </NavLink>
-                {showForClubAdmin && (
-                  <NavLink to={`/club`} className={({isActive}) => getClassName(isActive)}>
-                    Club
-                  </NavLink>
+                {isLoading ? (
+                  <Skeleton className="h-6 w-14" />
+                ) : (
+                  showForClubAdmin && (
+                    <NavLink to={`/club`} className={({isActive}) => getClassName(isActive)}>
+                      Club
+                    </NavLink>
+                  )
                 )}
               </ul>
             </nav>
-            {!isLoading && (
-              <ul className="flex gap-4 items-center">
-                {!data ? (
-                  <>
-                    <NavLink to={`/signIn`} className={({isActive}) => getClassName(isActive)}>
-                      Sign In
-                    </NavLink>
-                    <NavLink to={`/signUp`} className={({isActive}) => getClassName(isActive)}>
-                      Sign Up
-                    </NavLink>
-                  </>
-                ) : (
-                  <Button onClick={onLogOut} disabled={loading}>
-                    Log Out
-                  </Button>
-                )}
-
-                <ModeToggle />
-              </ul>
-            )}
+            <ul className="flex gap-4 items-center">
+              {isLoading ? (
+                <>
+                  <Skeleton className="h-9 w-20" />
+                  <Skeleton className="h-9 w-20" />
+                </>
+              ) : !data ? (
+                <>
+                  <NavLink to={`/signIn`} className={({isActive}) => getClassName(isActive)}>
+                    Sign In
+                  </NavLink>
+                  <NavLink to={`/signUp`} className={({isActive}) => getClassName(isActive)}>
+                    Sign Up
+                  </NavLink>
+                </>
+              ) : (
+                <Button onClick={onLogOut} disabled={loading}>
+                  Log Out
+                </Button>
+              )}
+              <ModeToggle />
+            </ul>
           </>
         ) : (
           <Sheet open={isOpen} onOpenChange={open => setIsOpen(open)}>
