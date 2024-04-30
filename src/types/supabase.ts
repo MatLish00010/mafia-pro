@@ -244,7 +244,7 @@ export type Database = {
 					winner_team: Database["public"]["Enums"]["team"];
 					game_date: string;
 					game_notes: string;
-					players_data: Database["public"]["CompositeTypes"]["player_data_type"][];
+					players_data: TablesInsert<"game_details">[];
 					club_id: string;
 				};
 				Returns: undefined;
