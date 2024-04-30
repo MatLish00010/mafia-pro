@@ -5,19 +5,22 @@ import {getGamesWithDetails} from '@/requests/rating';
 import {RatingPlayer} from '@/requests/rating/types.ts';
 import {Months} from '@/types/Months.ts';
 import {User} from '@/types/User.ts';
+import {Tables} from '@/types/supabase.ts';
 
-type Props = {
+interface Props {
+  club_id: Tables<'clubs'>['id'];
   month: Months;
-};
+}
 
 const useRating = (props: Props) => {
   return useQuery({
-    queryKey: ['rating', props.month],
+    queryKey: ['rating', props.month, props.club_id],
     queryFn: () => {
       const year = new Date().getFullYear();
       const dateSelectedMonth = new Date(year, props.month);
 
       return getGamesWithDetails({
+        club_id: props.club_id,
         from: format(startOfMonth(dateSelectedMonth), 'yyyy-MM-dd'),
         to: format(endOfMonth(dateSelectedMonth), 'yyyy-MM-dd'),
       });
@@ -32,6 +35,7 @@ const useRating = (props: Props) => {
       return arr.sort((a, b) => b.sum - a.sum);
     },
     placeholderData: {},
+    enabled: !!props.club_id,
   });
 };
 

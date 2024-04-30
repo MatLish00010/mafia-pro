@@ -3,6 +3,7 @@ import {BREAK_AND_LOSE, HAND_LOSE, REMOVED, VOT} from '@/lib/points.ts';
 import {supabase} from '@/providers/supabaseClient.ts';
 import {RatingPlayer} from '@/requests/rating/types.ts';
 import {User} from '@/types/User.ts';
+import {Tables} from '@/types/supabase.ts';
 
 const defaultValues: RatingPlayer = {
   countOfGames: 0,
@@ -57,10 +58,19 @@ type Rating = {
   [key in User['nick']]: RatingPlayer;
 };
 
-export const getGamesWithDetails = async ({from, to}: {from: string; to: string}) =>
+export const getGamesWithDetails = async ({
+  from,
+  to,
+  club_id,
+}: {
+  from: string;
+  to: string;
+  club_id: Tables<'clubs'>['id'];
+}) =>
   supabase
     .from('games')
     .select(`*, game_details (*, users (*))`)
+    .eq('club_id', club_id)
     .gte('date', from)
     .lte('date', to)
     .throwOnError()

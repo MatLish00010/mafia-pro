@@ -1,3 +1,4 @@
+import Table from '@/routes/Rating/Table';
 import {Tables} from '@/types/supabase.ts';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/ui/tabs.tsx';
 
@@ -24,7 +25,7 @@ export default function Tab({club}: Props) {
         <Games club_id={club.id} />
       </TabsContent>
       <TabsContent value="rating" className="w-full">
-        rating
+        <Table club_id={club.id} />
       </TabsContent>
       <TabsContent value="admins" className="w-full">
         admins
