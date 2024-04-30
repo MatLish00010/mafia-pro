@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { format } from "date-fns";
 
 import { addGame } from "@/requests/games";
-import type { State } from "@/routes/Games/AddEdit/reducer.ts";
+import type { State } from "@/routes/Club/Tab/Games/AddEdit/reducer.ts";
 import type { Tables } from "@/types/supabase.ts";
 import { useToast } from "@/ui/toast/use-toast.ts";
 
