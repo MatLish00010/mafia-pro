@@ -16,7 +16,6 @@ export default function Tab({ club }: Props) {
 				<TabsTrigger value="players">Players</TabsTrigger>
 				<TabsTrigger value="games">Games</TabsTrigger>
 				<TabsTrigger value="rating">Rating</TabsTrigger>
-				<TabsTrigger value="admins">Admins</TabsTrigger>
 			</TabsList>
 			<TabsContent value="players" className="w-full">
 				<Players club_id={club.id} />
@@ -26,9 +25,6 @@ export default function Tab({ club }: Props) {
 			</TabsContent>
 			<TabsContent value="rating" className="w-full">
 				<Table club_id={club.id} />
-			</TabsContent>
-			<TabsContent value="admins" className="w-full">
-				admins
 			</TabsContent>
 		</Tabs>
 	);
