@@ -1,3 +1,3 @@
-import {Enums} from '@/types/supabase.ts';
+import type { Enums } from "@/types/supabase.ts";
 
-export type Role = Enums<'role'>;
+export type Role = Enums<"role">;

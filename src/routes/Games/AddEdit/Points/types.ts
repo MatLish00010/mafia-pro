@@ -1,11 +1,11 @@
-import {Role} from '@/types/Role';
+import type { Role } from "@/types/Role";
 
 export type DataForm = {
-  points: {
-    isWinner: boolean;
-    role: Role;
-    bonusesWinners: number;
-    bonusesLosers: number;
-    wills: number;
-  }[];
+	points: {
+		isWinner: boolean;
+		role: Role;
+		bonusesWinners: number;
+		bonusesLosers: number;
+		wills: number;
+	}[];
 };

@@ -1,3 +1,3 @@
 export const accessConfig = {
-  admins: ['ADMIN', 'CLUB_ADMIN'],
+	admins: ["ADMIN", "CLUB_ADMIN"],
 };
