@@ -1,21 +1,21 @@
-import {Navigate, Outlet, useLoaderData} from 'react-router-dom';
+import { Navigate, Outlet, useLoaderData } from "react-router-dom";
 
-import {getSessionWithProfile} from '@/requests/session';
-import {LoaderData} from '@/types/LoaderData.ts';
-import {Profile} from '@/types/Profile.ts';
+import type { getSessionWithProfile } from "@/requests/session";
+import type { LoaderData } from "@/types/LoaderData.ts";
+import type { Profile } from "@/types/Profile.ts";
 
 type Props = {
-  accessForRoles?: Profile['role'][];
+	accessForRoles?: Profile["role"][];
 };
 
-const RequiredRouter = ({accessForRoles}: Props) => {
-  const profile = useLoaderData() as LoaderData<typeof getSessionWithProfile>;
+const RequiredRouter = ({ accessForRoles }: Props) => {
+	const profile = useLoaderData() as LoaderData<typeof getSessionWithProfile>;
 
-  if (!profile || !accessForRoles?.includes(profile.role)) {
-    return <Navigate to="/signIn" />;
-  }
+	if (!profile || !accessForRoles?.includes(profile.role)) {
+		return <Navigate to="/signIn" />;
+	}
 
-  return <Outlet />;
+	return <Outlet />;
 };
 
 export default RequiredRouter;

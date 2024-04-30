@@ -1,11 +1,11 @@
-import Table from '@/routes/Rating/Table';
+import Table from "@/routes/Rating/Table";
 
 const Rating = () => {
-  return (
-    <section>
-      <Table />
-    </section>
-  );
+	return (
+		<section>
+			<Table />
+		</section>
+	);
 };
 
 export default Rating;

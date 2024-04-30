@@ -1,3 +1,3 @@
-import {Tables} from '@/types/supabase.ts';
+import type { Tables } from "@/types/supabase.ts";
 
-export type Profile = Tables<'profiles'>;
+export type Profile = Tables<"profiles">;
