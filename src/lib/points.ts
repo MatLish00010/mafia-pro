@@ -1,11 +1,21 @@
 import { formatFromThousand, formatToThousand } from "./numberFormat.ts";
 
+export const FIRST_KILLED_MAX = 0.45;
+export const FIRST_KILLED_MIN = -0.45;
+
+export const WILLS_MAX = 0.45;
+export const WILLS_MIN = -0.45;
+
 export const REMOVED = -0.5;
 export const VOT = -0.75;
+
 export const WIN = 1;
+
 export const BREAK_AND_LOSE = -0.4;
+
 export const MAX_BONUSES_LOSE = 0.4;
 export const MAX_BONUSES_WIN = 0.7;
+
 export const HAND_LOSE = -0.2;
 
 export const calculatePoints = ({

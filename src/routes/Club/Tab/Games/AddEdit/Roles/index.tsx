@@ -106,7 +106,7 @@ const Roles = ({ players, onSubmit, defaultValues }: Props) => {
 
 	useEffect(() => {
 		getDisabledKeys();
-	}, [getDisabledKeys]);
+	}, []);
 
 	const onReset = () => {
 		setDisabledKeys([]);

@@ -1,9 +1,15 @@
 import * as yup from "yup";
 
 import { formatFromThousand, formatToThousand } from "@/lib/numberFormat.ts";
-import { MAX_BONUSES_LOSE, MAX_BONUSES_WIN } from "@/lib/points.ts";
+import {
+	MAX_BONUSES_LOSE,
+	MAX_BONUSES_WIN,
+	WILLS_MAX,
+	WILLS_MIN,
+} from "@/lib/points.ts";
 import type { Role } from "@/types/Role.ts";
 
+import { points } from "@/utils/points.ts";
 import type { DataForm } from "./types";
 
 const calculateBonuses = (
@@ -32,16 +38,15 @@ export const validation = yup.object().shape({
 				wills: yup
 					.number()
 					.typeError("Must be a number")
-					.min(-0.45, "Min value can be -0.45")
-					.max(0.45, "Max value can be 0.45")
+					.min(WILLS_MIN, `Min value can be ${WILLS_MIN}`)
+					.max(WILLS_MAX, `Max value can be ${WILLS_MAX}`)
 					.required(),
 				bonusesWinners: yup
 					.number()
 					.test(
 						"maxBonusesWin",
-						"You can distribute 0.7 to winners",
+						`You can distribute ${points.distributeBonuses.winners} to winners`,
 						function () {
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 							// @ts-expect-error
 							const allData = this.from[1].value as DataForm;
 							const acc = calculateBonuses(allData, true, "bonusesWinners");
@@ -56,7 +61,7 @@ export const validation = yup.object().shape({
 					.number()
 					.test(
 						"maxBonusesLose",
-						"You can distribute 0.4 to losers",
+						`You can distribute ${MAX_BONUSES_LOSE} to losers`,
 						function () {
 							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 							// @ts-expect-error

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
+import { FIRST_KILLED_MAX, FIRST_KILLED_MIN } from "@/lib/points.ts";
 import type { Role } from "@/types/Role.ts";
 import type { User } from "@/types/User.ts";
 import { Button } from "@/ui/button.tsx";
@@ -45,8 +46,8 @@ const FirstKilled = ({ players, onSubmit, defaultValues, roles }: Props) => {
 				bonuses: yup
 					.number()
 					.typeError("Must be a number")
-					.min(-0.45, "Min value can be -0.45")
-					.max(0.45, "Max value can be 0.45"),
+					.min(FIRST_KILLED_MIN, `Min value can be ${FIRST_KILLED_MIN}`)
+					.max(FIRST_KILLED_MAX, `Max value can be ${FIRST_KILLED_MAX}`),
 			}),
 		),
 	});
