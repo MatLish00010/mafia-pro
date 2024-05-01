@@ -1,10 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import type * as React from "react";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/ui/button.tsx";
+import { buttonVariants } from "@/ui/button";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -21,21 +20,20 @@ function Calendar({
 			classNames={{
 				months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
 				month: "space-y-4",
-				// caption: 'flex justify-center pt-1 relative items-center',
-				caption_dropdowns: "flex gap-2",
-				caption_label: "text-sm font-medium flex items-center",
-				//   nav: 'space-x-1 flex items-center',
+				caption: "flex justify-center pt-1 relative items-center",
+				caption_label: "text-sm font-medium",
+				nav: "space-x-1 flex items-center",
 				nav_button: cn(
 					buttonVariants({ variant: "outline" }),
 					"h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
 				),
-				// nav_button_previous: 'absolute left-1',
-				// nav_button_next: 'absolute right-1',
+				nav_button_previous: "absolute left-1",
+				nav_button_next: "absolute right-1",
 				table: "w-full border-collapse space-y-1",
-				//   head_row: 'flex',
+				head_row: "flex",
 				head_cell:
 					"text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
-				//   row: 'flex w-full mt-2',
+				row: "flex w-full mt-2",
 				cell: cn(
 					"relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
 					props.mode === "range"
@@ -60,14 +58,8 @@ function Calendar({
 				...classNames,
 			}}
 			components={{
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-4 w-4" />,
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
+				IconLeft: () => <ChevronLeftIcon className="h-4 w-4" />,
+				IconRight: () => <ChevronRightIcon className="h-4 w-4" />,
 			}}
 			{...props}
 		/>

@@ -72,7 +72,6 @@ const AddEdit = ({ onOpenChange, prevData, users, club_id }: Props) => {
 			}),
 		),
 	});
-
 	const { mutate, isPending } = useAddUser(() => {
 		if (onOpenChange) {
 			onOpenChange(false);
@@ -149,12 +148,24 @@ const AddEdit = ({ onOpenChange, prevData, users, club_id }: Props) => {
 										</PopoverTrigger>
 										<PopoverContent className="w-auto p-0" align="start">
 											<Calendar
-												captionLayout="dropdown"
-												fromYear={1970}
-												toYear={new Date().getFullYear()}
 												mode="single"
 												selected={field.value as Date}
 												onSelect={field.onChange}
+												disabled={(date) =>
+													date > new Date() || date < new Date("1900-01-01")
+												}
+												defaultMonth={field.value as Date}
+												captionLayout="dropdown"
+												toYear={2010}
+												fromYear={1970}
+												classNames={{
+													day_hidden: "invisible",
+													dropdown:
+														"px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background",
+													caption_dropdowns: "flex gap-3",
+													vhidden: "hidden",
+													caption_label: "hidden",
+												}}
 												initialFocus
 											/>
 										</PopoverContent>
@@ -190,12 +201,24 @@ const AddEdit = ({ onOpenChange, prevData, users, club_id }: Props) => {
 										</PopoverTrigger>
 										<PopoverContent className="w-auto p-0" align="start">
 											<Calendar
-												captionLayout="dropdown-buttons"
-												fromYear={1900}
-												toYear={new Date().getFullYear()}
 												mode="single"
 												selected={field.value as Date}
 												onSelect={field.onChange}
+												disabled={(date) =>
+													date > new Date() || date < new Date("2015-01-01")
+												}
+												defaultMonth={field.value as Date}
+												captionLayout="dropdown"
+												toYear={new Date().getFullYear()}
+												fromYear={2015}
+												classNames={{
+													day_hidden: "invisible",
+													dropdown:
+														"px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background",
+													caption_dropdowns: "flex gap-3",
+													vhidden: "hidden",
+													caption_label: "hidden",
+												}}
 												initialFocus
 											/>
 										</PopoverContent>
