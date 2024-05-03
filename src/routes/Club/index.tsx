@@ -21,7 +21,7 @@ export default function Club() {
 	};
 
 	useEffect(() => {
-		if (!searchParams.get("club") && clubs?.[0].id) {
+		if (!searchParams.get("club") && clubs?.[0]?.id) {
 			setParams(clubs[0].id);
 		}
 	}, [clubs]);
